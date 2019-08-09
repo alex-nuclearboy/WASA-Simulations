@@ -1,3 +1,9 @@
+*~
+~*
+run_*.sh
+run_*.log
+*.sh.*
+
 # Prerequisites
 *.d
 
@@ -54,3 +60,15 @@ dkms.conf
 # Proton variables files
 ProtonVariables-*.txt
 
+#WMC
+etap.*
+epio*
+fort.*
+test.*
+wmc.dat
+
+# specific files
+WMC.*
+smear.txt
+*.root
+main
