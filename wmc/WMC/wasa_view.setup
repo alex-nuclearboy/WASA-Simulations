@@ -1,0 +1,121 @@
+C************************************* WASA VIEWPOINT DEFINITIONS ************************************************************
+C                                                                                                            
+C************  There MUST be 32 !!! lines of this text before first viewpoint is defined        ******************************
+C-----------+--------+---------+------+----------+---------------------+-----------+------------------------------------------+
+C  Picture  | Basic  | Center  | Zoom | Cut      |drawtype:1 GDRAWC    |draw:      |     draw options set by GDOPT           |
+C  'name'   | volume | U_coor  |factor| axis     |         2 GDRAWX    |  head     |     set by GDOPT (see GEANT manual)     |
+C           |        |    &    |      | &value   |         3 GDRAW     |& scale    |                                         |
+C           |        | W_coor  |      |          |         4 GDTREE    |& axis     +------+------+------+------+------+------+
+C           |        |         |      |          |         5 GDRAWC &  |& part name|      |	 |	|      |      |      |
+C           |        |         |      |          |&          magn field|& tracknumb|'PROJ'|'THRZ'|'TRAK'|'HIDE'|'SHAD'|'EDGE'|
+C           |        |         |      |if GDTREE |angles:	       |	   |can be|      |can be|      |      |	     |
+C           |        |         |      |then      |     th_cut, phi_cut |if GDTREE  |'PARA'|	 |'LINE'|      |      |      |
+C           |        |         |      |LEVMAX    |     th_view,phi_view|then 5     | or   |	 |  or  |      |      |      |
+C           |        |         |      |(see GEANT|     for GDRAW(X)    |select opt.|'PERS'|      |'POIN'|      |      |	     |
+C           |        |         |      | manual)  |    (see geant manual|(see GEANT |	  |	 |      |      |      |      |
+C           |        |         |      |          |          for angles)| manual)   |	  |	 |      |      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |      |      |      |      |
+C           |        |         |      |          |If drawtype=5, then  | 	   |	  |	 |      |      |      |      |
+C           |        |         |      |          |1.angle =max. radius |	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |of circles which     |	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |represent magn. field|	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |		       |	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |2.angle =colour of   |	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |circles	       |	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |		       | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |		       | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |	|      |      |      |
+C           |        |         |      |          |                     | 	   |	  |	 |	|      |      |      |
+C-----------+--------+---------+------+----------+---------------------+-----------+------+------+------+------+------+------+
+'Main Side'   'WASA'   4.5   19.  .048  1    0.1  1   0.   0.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Main Top'    'WASA'   4.5   19.  .048  2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Main 3D'     'WASA'   10.   05.  .07   1    0.   3  90.  90.  90.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF '
+'FD Side'     'WASA'  -16.   15.  .14   1    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FD Side 3D'  'WASA'   -5.   15.  .08   1 1111.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'ON'  'ON'  'ON'
+'FWC 3D'      'WASA'  -12.   25.  .2    1    0.   3  70. 130.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'ON'  'ON'  'ON'
+'FWC Front'   'WASA'   10.   10.  .1    3  110.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Straw Front' 'WASA'   10.   10.  .1    3  142.2  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FPC Zoom'    'WASA'  -40.   15.  .4    1   10.0  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FHD Front'   'WASA'   10.   10.  .1    3  160.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FHD Side'    'WASA'  -27.   15.  .25   1    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FRU1 Front'  'WASA'   10.   10.  .08   3  222.0  1   0.   0.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FRI2 Front'  'WASA'   10.   10.  .1    3  208.5  1   0.   0.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'FRI 3D Side' 'WASA'  -20.   15.  .14   1 1000.1  1   0.   0.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'ON'  'ON'  'ON'
+'FRI 3D top'  'WASA'  -20.   15.  .14   2 1000.1  1   0.   0.   0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'ON'  'ON'  'ON'
+'FRH4 Front'  'WASA'   10.   10.  .1    3  205.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF '
+'FVH Front'   'WASA'   10.   10.  .08   3  246.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF '
+'Cen Front'   'WASA'   10.   15.  .13   3    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'CenFrZoom'   'WASA'   10.   15.  .5    3    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Cen Side'    'WASA'   07.   15.  .1    1    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Cen Top'     'WASA'   07.   15.  .1    2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'PSB'	      'WASA'   10.   15.  .18   3  -29.95 1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'PSF'	      'WASA'   10.   15.  .18   3   26.5  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'EndCone'     'WASA'   -5.   12.  .15   1    0.2  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'QPOL front'  'WASA'   12.   15.  .07   3  360.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TSC1 front'  'WASA'    9.   15.  .1    3  610.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BMG1 front'  'WASA'    7.   15.  .25   3  490.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BMG@Qpol fr' 'WASA'	7.   15.  .3    3  470.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BND side'    'WASA'  -13.   22.  .04   1   -1.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TS'	      'WASA'    1.5  20.  .015  2    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TS 3D '      'BND4'   11.   18.  .05   1    0.   3  50. 110.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF '
+'BND4 large'  'WASA'  -11.5  22.  .032  2    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BND4 end'    'WASA'  -79.   29.  .1    2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BND4 middle' 'WASA'  -42.   21.  .075  2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BND4 begin'  'WASA'  -26.   21.  .08   2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'BND4&QPOL'   'WASA'  -15.   21.  .05   2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Mag field'   'WASA'   1.5   20.  .017  2    0.1  5   0.15 4.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'Mag field2'  'WASA'  -16.8  20.  .035  2    0.   5   0.2  4.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'MFLD 3D'     'MFLD'    7.   10.  .1    3    0.1  3  90. 190.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'CsI'	      'WASA' -180.   31.  .275  2    0.1  1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TS 3D Lar'   'BND4'   41.   65.  .25   1    0.   3   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'1.win sid'   'WASA'  -41.   22.  .07   1   -10.  1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'1.win top'   'WASA'  -41.   22.  .07   2    0.   1   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE CD'     'CD  '    6.5  19.  .01   2    0.1  4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE ALL'    'WASA'   07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE 2Lev'   'WASA'   10.   10.  .03   2    0.1  4 -40.  10.  70.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE 3Lev'   'WASA'   10.   10.  .045  3    0.   4   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE MFD1'   'MD 1'   07.   10.  .025  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE FD'     'FD'     07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE BND4'   'BND4'   07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE BND3'   'BND4'   07.   10.  .025  3    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE BND2'   'BND4'   07.   10.  .025  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE TSDE'   'TSDE'   07.   10.  .025  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE TE1C'   'TE1C'   07.   10.  .025  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE TS01'   'TS01'   07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE BMG1'   'BMG1'   07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE BMG6'   'BMG6'   07.   10.  .025  0    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE SOL'    'SOL '   07.   10.  .035  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE FWCC'   'FWCC'   07.   10.  .025  2    0.   4   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'TREE MFLD'   'MFLD'   07.   10.  .025  5    0.   4   0.   0.	0.   0.  0 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+'define'      'WASA'   07.   10.  .025  1    0.   1   0.   0.	0.   0.  1 1 1 1 1  'PERS' 'OFF' 'LINE' 'OFF' 'OFF' 'OFF'
+

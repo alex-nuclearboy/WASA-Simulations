@@ -1,0 +1,176 @@
+C=         WASA - VOLUME ATTRIBUTES 
+C=
+C=   For every volume the attributs are set by
+C=   the routine GSATT (see GEANT manual).
+C=   The end of this file MUST be defined by a volume
+C=   of the name 'ENDE' !!  All further lines will not be read!!
+C=   There MUST be 16 !! lines of this stupid text
+C=   before the first volume attributes are defined!!!
+C=   For volumes not listed here, the default values are used!
+C======================================================
+C=     W    S    L    L    C    F                                    	    
+C=     O    E    S    W    O    I                                    	    
+C=     R    E    T    I    L    L                                    	    
+C=     K    N    Y    D    O    L                                    	    
+C======================================================
+C=
+'WASA' 1    1    1    1    2    0
+'RI1E' 1    1    1    1    1    0
+'RI2E' 1    1    1    1    1    0
+'FD  ' 1    0    1    1    2    0
+'CD  ' 1    0    1    1    2    0
+'ESC ' 1    0    1    1    3    0
+'MFLD' 1    1    1    1    6    0
+'BND4' 1    1    1    1    4    0 !
+'BTCD' 1    1    1    1    2    0 !
+'BVC2' 1    1    1    1    2    0 ! something at end of cone at beampipe
+'PTB0' 1    1    1    1    1    0 ! something at mdc ???
+'PTB1' 1    1    1    1    1    0 ! something at mdc ???
+'MD 1' 1    0    1    1    2    0
+'MD 2' 1    0    1    1    2    0
+'MD 3' 1    0    1    1    2    0
+'MD 4' 1    0    1    1    2    0
+'MD 5' 1    0    1    1    2    0
+'MD 6' 1    0    1    1    2    0
+'MD 7' 1    0    1    1    2    0
+'MD 8' 1    0    1    1    2    0
+'MD 9' 1    0    1    1    2    0
+'MD10' 1    0    1    1    2    0
+'MD11' 1    0    1    1    2    0
+'MD12' 1    0    1    1    2    0
+'MD13' 1    0    1    1    2    0
+'MD14' 1    0    1    1    2    0
+'MD15' 1    0    1    1    2    0
+'MD16' 1    0    1    1    2    0
+'MD17' 1    0    1    1    2    0
+'ME 1' 1    0    1    1    2    0
+'ME 2' 1    0    1    1    2    0
+'ME 3' 1    0    1    1    2    0
+'ME 4' 1    0    1    1    2    0
+'ME 5' 1    0    1    1    2    0
+'ME 6' 1    0    1    1    2    0
+'ME 7' 1    0    1    1    2    0
+'ME 8' 1    0    1    1    2    0
+'ME 9' 1    0    1    1    2    0
+'ME10' 1    0    1    1    2    0
+'ME11' 1    0    1    1    2    0
+'ME12' 1    0    1    1    2    0
+'ME13' 1    0    1    1    2    0
+'ME14' 1    0    1    1    2    0
+'ME15' 1    0    1    1    2    0
+'ME16' 1    0    1    1    2    0
+'ME17' 1    0    1    1    2    0
+'MG 1' 1    1    1    1    3    0
+'MG 2' 1    1    1    1    3    0
+'MG 3' 1    1    1    1    3    0
+'MG 4' 1    1    1    1    3    0
+'MG 5' 1    1    1    1    3    0
+'MG 6' 1    1    1    1    3    0
+'MG 7' 1    1    1    1    3    0
+'MG 8' 1    1    1    1    3    0
+'MG 9' 1    1    1    1    3    0
+'MG10' 1    1    1    1    3    0
+'MG11' 1    1    1    1    3    0
+'MG12' 1    1    1    1    3    0
+'MG13' 1    1    1    1    3    0
+'MG14' 1    1    1    1    3    0
+'MG15' 1    1    1    1    3    0
+'MG16' 1    1    1    1    3    0
+'MG17' 1    1    1    1    3    0
+'BTCD' 1    1    1    1    3    0 ! something at end of cone at beampipe
+'FWCC' 1    1    1    1    6    0 ! something at end of cone
+'FWCD' 1    1    1    1    6    0 ! something at end of cone
+'SOL ' 1    1    1    1    1    0 ! something of coil
+'COIL' 1    1    1    1    1    0 ! something of coil
+'SOAL' 1    1    1    1    1    0 ! something of coil
+'VCF1' 1    1    1    1    7    0 ! something at end of cone
+'VCF2' 1    1    1    1    7    0 ! something at end of cone
+'VCF3' 1    1    1    1    7    0 ! something at end of cone
+'VCW ' 1    1    1    1    7    0 ! the 'ball' at forward det
+'VCB1' 1    1    1    1    7    0 ! something behind cone
+'VCB2' 1    1    1    1    7    0 ! something behind cone
+'VCB3' 1    1    1    1    7    0 ! something behind cone
+'VCB4' 1    1    1    1    7    0 ! something behind cone
+'VCT ' 1    1    1    1    1    0 ! something of beampipe before target
+'SOC1' 1    1    1    1    1    0 ! pipes for coil
+'SOC0' 1    1    1    1    1    0 ! pipes for coil
+'IRF ' 1    1    1    1    6    0 ! surrounding of christals forward
+'IRB ' 1    1    1    1    6    0 ! surrounding of christals backward
+'IRC ' 1    1    1    1    6    0 ! surrounding of christals central
+'MDF ' 1    1    1    1    1    0 ! something of mdc surrounding forward
+'MDB ' 1    1    1    1    1    0 ! something of mdc surrounding backward
+'MDO ' 1    1    1    1    1    0 ! something of mdc surrounding central
+'PSL1' 1    1    1    1    1    0 ! some cables between christals ???
+'PSL0' 1    1    1    1    1    0 ! some cables between christals ???
+'PTB0' 1    1    1    1    1    0 ! parts of target chimni
+'PTB1' 1    1    1    1    1    0 ! parts of target chimni
+'PTB2' 1    1    1    1    1    0 ! parts of target chimni
+'PTB3' 1    1    1    1    1    0 ! parts of target chimni
+'PCC ' 1    1    1    1    1    0 ! something of beampipe in central
+'PCF ' 1    1    1    1    4    0 ! cone for exiting particle
+'PSF ' 1    0    1    1    1    0 ! scint at mdc forward
+'PSFE' 1    1    1    1    4    0 ! scint at mdc forward
+'BTF1' 1    1    1    1    1    0 ! something behind strawtracker at beampipe
+'BVC1' 1    0    1    1    1    0 ! something of beampipe
+'BTB ' 1    1    1    1    1    0 ! something of beampipe
+'PSCE' 1    1    1    1    2    0 ! scint around mdc
+'PSBE' 1    1    1    1    4    0 ! scint at mdc backward
+'PSB ' 1    0    1    1    1    0 ! scint at mdc backward
+'STRW' 1    1    1    1    4    0 ! something at straws
+'FPC ' 1    1    1    3    2    0 ! something at strawtracker
+'FVDH' 1    1    1    1    5    0 ! something in middle of veto hodo
+'FPDH' 1    1    1    1    4    0 ! something in middle of strawtracker
+'FVHC' 1    0    1    1    2    0 ! veto hodo
+'RH1C' 1    0    1    1    1    0 ! forw. range
+'RH2C' 1    0    1    1    1    0 ! forw. range
+'RH3C' 1    0    1    1    1    0 ! forw. range
+'RH4C' 1    0    1    1    1    0 ! forw. range
+'HD1C' 1    0    1    1    2    0 ! juelich
+'HD2C' 1    0    1    1    3    0 ! juelich
+'HD3C' 1    0    1    1    2    0 ! juelich
+'FVHE' 1    1    1    1    4    0 ! veto hodo
+'RH1E' 1    1    1    0    2    0 ! forw. range
+'RH2E' 1    1    1    0    3    0 ! forw. range
+'RH3E' 1    1    1    1    4    0 ! forw. range
+'RH4E' 1    1    1    1    6    0 ! forw. range
+'HD1E' 1    1    1    1    3    0 ! juelich
+'HD2E' 1    1    1    1    2    0 ! juelich
+'HD3E' 1    1    1    1    4    0 ! juelich
+'SECE' 1    1    1    1    2    0 ! central det middle 
+'SEFE' 1    1    1    1    2    0 ! central front
+'SEBE' 1    1    1    1    2    0 ! central back
+'QPOL' 1    1    1    1    3    0 ! quadrupol !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+'TS01' 1    1    1    1    6    0 ! 
+'VC 1' 1    1    1    1    6    0 ! 
+'VE 1' 1    1    1    1    4    0 ! 
+'OL 1' 1    1    1    1    3    0 ! 
+'OR 1' 1    1    1    1    2    0 ! 
+'TS04' 1    1    1    1    2    0 ! 
+'VC 4' 1    1    1    1    2    0 ! 
+'VE 4' 1    1    1    1    2    0 ! 
+'OL 4' 1    1    1    1    2    0 ! 
+'OR 4' 1    1    1    1    2    0 ! 
+'TS11' 1    0    1    1    3    0 ! 
+'VC11' 1    1    1    1    3    0 ! 
+'VE11' 1    1    1    1    3    0 ! 
+'OL11' 1    1    1    1    3    0 ! 
+'OR11' 1    1    1    1    3    0 ! 
+'TS12' 1    1    1    1    5    0 ! 
+'VC12' 1    1    1    1    5    0 ! 
+'VE12' 1    1    1    1    5    0 ! 
+'OL12' 1    1    1    1    5    0 ! 
+'OR12' 1    1    1    1    5    0 ! 
+'TS13' 1    1    1    1    4    0 ! 
+'VC13' 1    1    1    1    4    0 ! 
+'VE13' 1    1    1    1    4    0 ! 
+'OL13' 1    1    1    1    4    0 ! 
+'OR13' 1    1    1    1    4    0 ! 
+'BMG1' 1    1    1    1    2    0 ! 
+'GE 1' 1    1    1    1    2    0 ! 
+'GV 1' 1    1    1    1    3    0 ! 
+'GE 1' 1    1    1    1    4    0 ! 
+'O1 1' 1    1    1    1    7    0 ! 
+'O2 1' 1    1    1    1    6    0 ! 
+'ENDE' 0    0    0    0    0    0 !!!! NOTE: the string "ENDE" defines the last line
+'FRA4' 1    1    1    1    2    0 
+

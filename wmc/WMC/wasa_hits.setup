@@ -1,0 +1,16 @@
+C=            WASA - DRAWING - HITS - OPTIONS
+C=    Drawing hits is performed by the routine GDHITS (see. GEANT manual)
+C=    There MUST be 8 !!! lines of this stupid text, before the
+C=    first Drawing of Hits is defined !!!
+C=    The end of this file MUST be defined by the string "ENDE"
+C=    in the first column. All further lines will not be read!!!
+C=    
+C=    
+'ENDE' '*'    0 999 0.     !!!! NOTE: the string "ENDE" defines the last line
+'*'    'TSDE' 0 844 0.6 
+'*'    'HD1E' 0 842 0.6 
+'*'    'RH1E' 0 844 0.6 
+'*'    'RH2E' 0 844 0.6 
+'*'    'RH3E' 0 844 0.6 
+'*'    'RH4E' 0 844 0.6 
+'ENDE' '*'    0 999 0.     !!!! NOTE: the string "ENDE" defines the last line
