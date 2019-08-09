@@ -1,26 +1,26 @@
 /***********************************************
 * Software developement for WASA-at-COSY
-* (c) 2018-2019 The WASA-at-COSY Collaboration
+* (c) 2017-2019 The WASA-at-COSY Collaboration
 * This software is distributed under the terms
-of the GNU General Public Licence v3.0
+  of the GNU General Public Licence v3.0
 ***********************************************/
 
 //Macro for simulation pd -> BS -> pdpi0 -> pd2g reaction
 
-#include<TH1F.h>
-#include<TH2F.h>
-#include<TH3F.h>
-#include<TVector3.h>
-#include<TLorentzVector.h>
-#include<TF1.h>
-#include<TFile.h>
-#include<TTree.h>
-#include<TMath.h>
-#include<TCanvas.h>
-#include<TClonesArray.h>
-#include<TGraph.h>
-#include<TROOT.h>
-#include<PParticle.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TH3F.h>
+#include <TVector3.h>
+#include <TLorentzVector.h>
+#include <TF1.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TMath.h>
+#include <TCanvas.h>
+#include <TClonesArray.h>
+#include <TGraph.h>
+#include <TROOT.h>
+#include <PParticle.h>
 
 void eventgenerator() {
 
@@ -51,7 +51,7 @@ void eventgenerator() {
     TString fileout = "${PLUTO_OUTPUT}/pd-bound-pdpi0_G10_Bs10-1.root";
     //TString fout = fileout + Form("_%.3f.root", p_beam);
 
-    TFile* f = new TFile((const char*) fileout,"RECREATE");
+    TFile* newfile = new TFile((const char*) fileout,"RECREATE");
 
     ////General structure of the tree////
     //Declaration of leave types
@@ -509,7 +509,6 @@ void eventgenerator() {
     }   //01//
 
     baobab->Write();
-
-    f->Close();
+    newfile->Close();
 
 }
