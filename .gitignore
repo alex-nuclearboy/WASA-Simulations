@@ -72,3 +72,4 @@ WMC.*
 smear.txt
 *.root
 main
+wmc_tmp*
