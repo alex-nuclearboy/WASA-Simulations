@@ -41,6 +41,10 @@ run_*.log
 *.i*86
 *.x86_64
 *.hex
+generator
+
+# CMake folder
+/build
 
 # Debug files
 *.dSYM/
@@ -60,14 +64,14 @@ dkms.conf
 # Proton variables files
 ProtonVariables-*.txt
 
-#WMC
+# WMC
 etap.*
 epio*
 fort.*
 test.*
 wmc.dat
 
-# specific files
+# Specific files
 WMC.*
 smear.txt
 *.root
