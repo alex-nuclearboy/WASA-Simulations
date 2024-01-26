@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     // Perform reaction simulation
     ReactionSimulation react;
     
-    for (int runindex = 8; runindex < 10; ++runindex) {
+    for (int runindex = 1; runindex < 10; ++runindex) {
 		std::cout << "Running simulation iteration " 
 				  << runindex + 1 << "/10..." << std::endl;
 		react.simulate(finalProducts, filename, runindex + 1);
