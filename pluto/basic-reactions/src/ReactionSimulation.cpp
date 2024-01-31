@@ -8,8 +8,7 @@
 ReactionSimulation::ReactionSimulation() {
     
     // Beam Smearing Setup
-    double sigma = (1.635 - 1.426) / 2; // Половина розмаху діапазону імпульсу
-    
+        
     smear = new PBeamSmearing(const_cast<char*>("beam_smear"), 
                               const_cast<char*>("Beam smearing"));
     momentumFunc = new TF1(const_cast<char*>("Uniform"),
