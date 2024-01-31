@@ -1,0 +1,21 @@
+FVH1 _____EQUIPMENT INFO FOR COMMON/EQ1FVH/
+C FVH position valid from Jan07
+C    NI0=2,  NM0=1, NP0=1, NL0=12            "FD VETO HODOSCOPE" WASA DET 4
+C    IG1 NI1 II1     NM1 IP1 NP1 MP1 NL1     HU1     HV1     EW1     SS1
+       0   2   1   2   1   8   1   2  12    82.8    84.0    13.8   4.000
+C        EO1     BU1     BV1     HW1     RL1     MT1     TG1     TS1   
+        0.000    5.50    5.50    1.00   42.40     32   100.0     3.0
+C        XC1     YC1     ZC1     ST1     CT1     SF1     CF1
+C  -Jun02      0.00    0.00  245.00  0.0000  1.0000  0.0000  1.0000
+C ACW0        0.00    0.00  248.50  0.0000  1.0000  0.0000  1.0000
+        0.00    0.00  450.0  0.0000  1.0000  0.0000  1.0000
+C        UC1     VC1     WC1     SO1     CO1
+        0.00    0.00    1.00  1.0000  0.0000                              
+C    O01             
+      0.     0.      
+C TDC t0's 
+24*0.0
+C ADC Pedestals
+24*0.0
+         'Ara5'
+

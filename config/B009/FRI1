@@ -1,0 +1,43 @@
+FRI1 _____EQUIPMENT INFO FOR COMMON/EQ1FRI/
+C    "FD RANGE INTERLEAVED PLNS" WASA DET 16
+C    Configuration status Jan07, FRI between FRH2/3
+C    corrected thickness of scintillator and cover
+c    (before : 3mm / 0.5mm, now : 5mm/0.1mm)
+C    corrected space between planes
+C
+C    NI0=2,  NM0=1, NP0=6, NL0=32        
+C    IG1 NI1 II1    NM1 IP1 NP1  MP1         NL1          
+     0   2   1  2   1   40  0    1 2  4*0    32 32 4*0
+C
+C    HU1                 HV1                  
+     69.0  69.0  4*0.    69.0  69.0  4*0.
+C
+C    EW1                         
+     6. 3. 3.  6. 3. 3.   12*0.
+C    LW1                      
+     10  1  2  10  1  2   12*0
+C    LS1
+      6  6  4*0
+C
+C    HW1 is half with of the plane. FRI-Planethickness:5mm
+C    EO1      BU1         BV1         HW1          
+     6*0.000  2*4.0 4*0.  2*4.0 4*0.  2*.25    4*0.  
+C
+C    CW1 is thickness of covermaterial per side. FRI:0.1mm
+C    RL1     MT1  CW1      MC1   TG1     TS1
+      42.40   32   6*0.01   31    100.0   2.0
+C    
+C    XC1     YC1     ZC1     ST1     CT1     SF1     CF1
+C     -0.80    0.20  207.75  0.0000  1.0000  0.0000  1.0000
+     0.0    0.0  196.58  0.0000  1.0000  0.0000  1.0000
+C    WC1(2) is difference in center-coord. along beam
+C       UC1     VC1    WC1(1) WC1(2)  WC1(3-6) 
+      6*0.00  6*0.00    0.00    0.6    4*0.00  
+C
+C    SO1                     CO1
+      0.0000  1.0000 4*0.0    1.0000  0.0000 4*1.0
+C    O01             O11
+    6*0.   6*0.      384*0.      
+C ADC PEDESTALS
+                     384*0.0       'A000'
+
