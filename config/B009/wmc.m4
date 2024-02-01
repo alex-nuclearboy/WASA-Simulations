@@ -1,0 +1,165 @@
+READ 11 DEFAULT ALIGNMENT FILE
+READ 12 SPECIAL ALIGNMENT FILE FOR THIS RUN  $$$
+READ 13 SPECIAL ALIGNMENT FILE FOR THIS RUN  $$$
+IFLG WASA INIT FLAGS LINXXX $$$
+C  SC  FD  FP  MD  PS  SE  TS  FX  FW  HL  BV  SO   MFL  FTG  GTG  PTG  CBM  TGT
+C    5   1   1   2   1   1   0   2   2   0   1   1   100    0    0    1    1    1
+C    5   1   1   2   1   1   0   2   2   0   1   1   100    0    0    1    1    1
+C    FX =2 Cerenkov  FW/10=1 - FRU     
+C    6   1   1   2   1   1   0   2   12   0   1   1   100    0    0    1    1    1
+C    6   1   1   2   1   1   0   2   0   0   1   1   100    0    0    1    1    1
+C PS=2 -- extra elements:
+C    6   1   1   2   2   1   0   2   0   0   1   1   100    0    0    1    1    1
+ 6   1   1   2   2   1   0   0   2   0   1   1  100    0    0    1    2    1
+
+MFLG WASA INIT FLAGS LINXXX LAST WORDS $$$
+C    EGN  TRI  TRC  ERC   ZZ(1-5)
+C      2    8    0    0     5*-2
+      12    0    0    0    5*-2
+W4MF  CD MAGNETIC FIELD PARAMETERS
+C  TRACKING OPT,   BZ (KG) IF 0<LINMFL<10  (LINMFL=100,..  -> FIELD MAP FROM FILE)
+        1           9.917
+P4BM BEAM PARTICLE PARAMETERS  $$$ IF LINCBM SET X Y POS AND DEV ARE USED 
+C TYPE,  MASS,  CHARGE,  MOMENTUM,  REL DEV,   RADIUS,     X Y POS,     X Y DEV
+C 1360 MEV
+   14   0.9383     1.     2.098041    0.001    699.7       0. 0.     .2 .5
+P4TG TARGET PARAMETERS  $$$ IF LINTGT SET X Z POS AND DEV ARE USED  
+C TYPE,  MASS,   X  Z POS, X  Z DEV
+C   14   0.9383   0. 0.    .20  .32
+   14   1.876   0. 0.    .07  .07
+
+EBIN NB OF KINETIC ENERGY BIN LIMITS AND THEIR VALUES (GEV) MAX TEN
+C    5  .015  .150  .300  .400  .600 
+    6  0.000  0.045  0.125  0.180  .230  0.550
+C    7  0.010 0.040 .060 .140 .160 .240 .360  
+
+AUTO 0 AUTOMATIC CALC OF TRACKING MEDIUM PARAMETERS
+AUTO 1 AUTOMATIC CALC OF TRACKING MEDIUM PARAMETERS
+WMED TRACKING MEDIUM PARAMETERS FOR GSTMED
+C  GEANT V3.14   NOTE!! CHANGED FOR V3.16
+C  IFIELD    = 0  if no magnetic field
+C            = -1  reserved for user decision in GUSWIM
+C            = 1  tracking performed with GRKUTA
+C            = 2  tracking performed with GHELIX
+C            = 3  tracking performed with GHELX3
+C  FIELDM    maximum field value (in Kilogauss)
+C  TMAXFD    maximum  angle due  to field  permitted in  one step  (in
+C            degrees)
+C  DMAXMS    maximum displacement for multiple  scattering in one step
+C            (in cm)
+C  DEEMAX    maximum fractional energy loss in one step
+C  EPSIL     tracking precision (in cm)
+C  STMIN     minimum step  due to energy loss or multiple scattering (cm)
+C *AUTO 1 GIVES AUTOMATIC CALC OF STEMAX, DEEMAX AND STMIN
+C   IFIELD FIELDM TMAXFD DMAXMS DEEMAX EPSIL STMIN
+       1     10.     5.   0.2    0.5   0.005  0.5
+C       0      0.     5.   0.2    0.5   0.005  0.5
+PMOM   PARAMETERS FOR MOM RCONS IN MDC     WGMOM
+C   BFLD   ZSIGMA  XYSIGMA   RADL       MWIRE
+C    (kG)    (CM)     (CM)    (CM)  (MIN NB HIT PLNS)
+     10.     .15     .01     3650.        5
+PBET   THICKNESS  RADL  RADIUS OF BE TUBE    WGMOM
+          0.12     35.    3.
+
+WTHR ENERGY DEP THRESHOLDS IN GEV FOR HITS
+C STD SET FOR WASA DETECTORS 1-20 (CODES AS FOR CARD "PEFF")
+  .00015 .0000 .002 .0003 .0003 .00015 .00015 .0002 .0010 .0010 
+  .0010 .0000 .0003 .0005 .0000  .0000  .002  .0000 .0000 .0000
+C USER SET FOR SPECIAL PURPOSES
+  .00015 .0000 .0005 .0002 .0000 .00015 .00015 .0002 .0010 .0010 
+  .0010  .0000 .0003 .0005 .0000 .0000  .0000  .0000 .0000 .0000  
+WCLU MAX HIT CLUSTER SIZES IN ELEMENTS FOR TRACK RECONSTRUCTION 
+C STD SET FOR WASA DETECTORS 1-20 (CODES AS FOR CARD "PEFF"
+  1     3     1     1     3     1     1     1     2     2 
+  2     0     1     1     1     0     1     0     0     0
+C USER SET FOR SPECIAL PURPOSES  (FOR FXC,SEB,SEF PHI DIRECTION)
+  1     1     1     1    99     1     1     1    99     2  
+ 99     0     1     1     1     0     1     0     0     0
+WFES  MC PULSE HEIGHT SMEARING PARAMETERS
+C   TYPE,   NB OF PH.ELECTRONS/GEV  FOR WASA DETECTORS 1-20
+     0     100000 0  200000  0 25000   3*25000   3*50000
+             9*0
+WRES  MC PULSE HEIGHT RELATIVE ENERGY SMEARING PARAMETERS
+C   TYPE,   RMS FRACTION  FOR WASA DETECTORS 1-20
+     0     0. 0. 0.  2*0.  3*0.0     3*0.0          9*0.0
+WNFP  HIT PLANE REQUIREMENT FOR TRACK RECONSTRUCTION IN FPC
+C MIN # HIT .. U, V,TH+,TH- PLNS ; .. PLNS IN MOD 1-4 ; .. PLNS IN TOTAL
+                   0  0   0   0             0  0  0  0           1
+WDFP  COORD DIFFERENCE REQUIREMENT FOR TRACK RECONSTRUCTION IN FPC
+C MAX DEV WITHIN A MODULE FOR U, V,TH+,TH- PLNS ; MAX DEV BETWEEN MODULES ...
+                            10.  10.  10.  10.       20.  20.  20.  20. 
+WNMD  HIT PLANE REQUIREMENT FOR TRACK RECONSTRUCTION IN MDC
+C MIN # HIT PLNS .. U, V,TH+,TH- ; .. IN TOT ; .. NOT HIT U, V,TH+,TH- ON TRK
+                   0  0   0   0         1                 1  1   1   1
+WDMD  COORD DIFFERENCE REQUIREMENT FOR TRACK RECONSTRUCTION IN MDC
+C MAX DEV WITHIN A MODULE FOR U, V,TH+,TH- PLNS
+                            10.  0.   10.  10. 
+
+WDLA  PROCESSING OF DELAYED SIGNALS FOR LONG RANGE TDCS
+C   ( ONLY IF WRITING RAW DATA AND DLA SIGNAL UPPER TIME LIMITS .GE. ZERO )
+C DLA SIGNALS: EDEP THRESHOLDS (GEV) FOR WUTIL PLNS 1-9 (FHD1-3,FRH1-4,FWC,FVH)
+  .0002   .0005   .0004     .003   .003   .003   .003     .0004     .0004
+C DLA SIGNALS: LOW TIME LIMIT (S) FOR WUTIL PLNS 1-9 (FHD1-3,FRH1-4,FWC,FVH)
+  0.      0.      0.        0.      0.      0.      0.        0.        0.
+C              UPPER TIME LIMIT (S)
+  6.5E-6  6.5E-6  6.5E-6    6.5E-6  6.5E-6  6.5E-6  6.5E-6    6.5E-6    6.5E-6
+C PROMPT SIGNALS: LOW TIME LIMIT (S) FOR WUTIL PLNS 1-9 (FHD1-3,FRH1-4,FWC,FVH)
+  0.      0.      0.        0.      0.      0.      0.        0.        0.
+C                 UPPER TIME LIMIT (S)
+  2.0E-7  2.0E-7  2.0E-7    2.0E-7  2.0E-7  2.0E-7  2.0E-7    2.0E-7    2.0E-7
+WDLA  PROCESSING OF DELAYED SIGNALS FOR LONG RANGE TDCS
+C   ( ONLY IF WRITING RAW DATA AND DLA SIGNAL UPPER TIME LIMITS .GE. ZERO )
+C DLA SIGNALS: EDEP THRESHOLDS (GEV) WUTIL PLNS 1-15 (FHD1-3,FRH1-5,FVH,FWC,FRU)
+ .0002 .0005 .0004  .003  .003  .003  .003  .003  .0004  .0004 5*0.003
+C DLA SIGNALS: LOW TIME LIMIT (S) FOR WUTIL PLNS 1-9 (FHD1-3,FRH1-5,FVH,FWC,FRU)
+ 0.     0.     0.      0.     0.     0.     0.     0.      0.     0.     5*0.
+C              UPPER TIME LIMIT (S)
+6.5E-6 6.5E-6 6.5E-6  6.5E-6 6.5E-6 6.5E-6 6.5E-6 6.5E-6  6.5E-6 6.5E-6 5*6.5E-6
+C PROMPT SIGNALS: LOW TIME LIMIT (S) FOR WUTIL PLNS 1-9 (FHD1-3,FRH1-4,FWC,FVH)
+ 0.     0.     0.      0.     0.     0.     0.     0.      0.     0.     5*0.
+C                 UPPER TIME LIMIT (S)
+2.0E-7 2.0E-7 2.0E-7  2.0E-7 2.0E-7 2.0E-7 2.0E-7 2.0E-7  2.0E-7 2.0E-7 5*2.0E-7
+TMEV 70105   -1    MTM SETS THE PACKED TIME WORDS BY HAND
+C     MTM(1)     STEERS SETTING OF DAY+100*(MONTH+100*YEAR)
+C          LT.0 -> ITM4EV(2) = FROM INPUT
+C          GE.0 -> ITM4EV(2) = MTM(2)
+C     MTM(2)     STEERS SETTING OF SEC+100*(MIN+100*HOUR)
+C          LT.0 -> ITM4EV(1) = FROM INPUT
+C          GE.0 -> ITM4EV(1) = MTM(1)
+BREM 1 GENERATE GAMMAS
+PAIR 1 GENERATE ELECTRON POSITRON PAIR
+COMP 1 COMPTON SCATTERING WITH ELECTRON GENERATION
+MULS 1 MOLIERE MULTIPLE SCATTERING
+PHOT 1 PHOTOELECTRIC EFFECT ELECTRON GENERATION
+ANNI 1 POSITRON ANNIHILATION
+HADR 1 HADRONIC INTERACTION WITH SECONDARIES
+CUTS 0.0001 0.00025 KINETIC ENERGY CUT FOR GAMMAS AND ELECTRONS
+     0.0001 0.0002                    FOR PROTONS AND NEUTRONS
+     0.0002                           FOR MUONS
+     0.0001 0.0001  BREMSSTRAHLUNG CUT FOR ELECTRONS AND HADRONS
+     0.0002         DELTA RAY LOW CUT 
+C DRAY 1 DELTA RAYS ABOVE CUT IF LOSS SET TO ONE
+C LOSS 1 ENERGY LOSS DEFAULT TWO
+
+C ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+C   To write hit record from MC in EPIO format set the NB of output streams
+C   on card "EPIO" to 1 and provide the decoding parameters on cards 
+C   "H4DC,P4AC,P4DC" and beam parameters on card "P4BM". Run NB is taken from
+C   GEANT card "RUNG" and date from "TMEV" (-1 -> date from computer).
+
+EPIO PARAMETERS
+ 0  1 NB OF INPUT AND OUTPUT STREAMS
+ 41   LOGICAL UNITS
+C FIRST , LAST ORD NB OF FILES TO INCLUDE (ZERO FOR ALL AND NEG NBS TO EXCLUDE)
+    0 0
+C NB OF RUNS TO WRITE ON THE DIFFERENT OUTPUT STREAMS (IF MORE THAN ONE)
+C  1  99
+C STATUS WORDS 1-9 + WORD 27 (BYTE SWAPPING FLAG (-1/1 OR -3/3 FOR VMS -> UNIX))
+C + EPREAD/EPOUT MODE (1-3) FOR EACH STREAM (CAUSE AN ACTION IF NE.0)
+ 10240  5120  0  0 -1 -1  0  0  0  -1  3       OUT TO DISK
+
+RECO -1 
+C NB OF RECORDS PER EVENT REQESTED ON OUTPUT / NEG MEANS NO CHECK  $$$
+C RECORD TYPES (0 MEANS ANY TYPE, NEG MEANS NOT MANDATORY)
+     0
+

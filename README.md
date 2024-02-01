@@ -37,8 +37,11 @@ Follow these steps to compile and run the simulation:
 
     # Clone the repository to your local machine
     git clone https://github.com/alex-nuclearboy/WASA-Simulations.git
+    # Configure the WMC package in accordance with the experimental setup used in the project
+    cd WASA-Simulations/config
+    ./apply_geometry.sh
     # Navigate to the working directory
-    cd WASA-Simulations/pluto/basic-reactions
+    cd ../pluto/basic-reactions
     # Create a directory for building the project
     mkdir build && cd build
     # Run CMake to configure the project

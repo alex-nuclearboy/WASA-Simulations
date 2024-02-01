@@ -1,42 +1,58 @@
 #include "ReactionSimulation.h"
-#include <PBeamSmearing.h>
 #include <PReaction.h>
-#include <TF1.h>
 #include <cstring>
 #include <iostream>
+#include <random>
+#include <chrono>
+
+ReactionSimulation::ReactionSimulation() {
+    
+    // Beam Smearing Setup
+        
+    smear = new PBeamSmearing(const_cast<char*>("beam_smear"), 
+                              const_cast<char*>("Beam smearing"));
+    momentumFunc = new TF1(const_cast<char*>("Uniform"),
+                           const_cast<char*>("1"), 1.426, 1.635);
+    angularFunc = new TF1(const_cast<char*>("Angular"),
+                          const_cast<char*>("gaus"), 
+                          -TMath::Pi(), TMath::Pi());
+    angularFunc->SetParameters(1.0, 0.0, 0.07);
+    smear->SetReaction(const_cast<char*>("p + d"));
+    smear->SetMomentumFunction(momentumFunc);
+    smear->SetAngularSmearing(angularFunc);
+    makeDistributionManager()->Add(smear);
+}
+
+ReactionSimulation::~ReactionSimulation() {
+    delete smear;
+    delete momentumFunc;
+    delete angularFunc;
+}
 
 void ReactionSimulation::simulate(const std::string& finalProducts,
                                   const std::string& filename,
                                   int iter) {
-
-    // Create beam smearing and set parameters
-    PBeamSmearing *smear = new PBeamSmearing("beam_smear",
-											 "Beam smearing");
-    TF1 *mf = new TF1("Uniform", "1", 1.426, 1.635);
-    smear->SetReaction(const_cast<char*>("p + d"));
-    smear->SetMomentumFunction(mf);
-    makeDistributionManager()->Add(smear);
-
-    // Define the output file path
-    std::string outputFile = "${PLUTO_OUTPUT}/pd-" + 
-							filename + "-" + 
-							std::to_string(iter);
-
-
-    // Convert strings to C-style strings
-    char* finalProductsCStr = new char[finalProducts.length() + 1];
-    char* outputFileCStr = new char[outputFile.length() + 1];
-    std::strcpy(finalProductsCStr, finalProducts.c_str());
-    std::strcpy(outputFileCStr, outputFile.c_str());
-
-    // Create and configure the reaction
-    PReaction myReaction(1.5305, "p", "d", finalProductsCStr, 
-						 outputFileCStr, 1, 0, 0, 0);
+                                    
+    unsigned int seed = static_cast<unsigned int>(
+        std::chrono::system_clock::now().time_since_epoch().count());
+    PUtils::SetSeed(seed);
     
-    myReaction.Print();
-    myReaction.Loop(1000000);
-
-    // Clean up dynamically allocated memory
-    delete[] finalProductsCStr;
-    delete[] outputFileCStr;
+    // Define the output file path
+    std::string outputFile = "${PLUTO_OUTPUT}/pd-" + filename + "-" +
+                              std::to_string(iter);
+                              
+    // Reaction Setup
+    PReaction myReaction(const_cast<char*>("_P1 = 1.5305"),
+                         const_cast<char*>("p"), const_cast<char*>("d"),
+                         const_cast<char*>(finalProducts.c_str()),
+                         const_cast<char*>(outputFile.c_str()),
+                         1, 0, 0, 0);
+                         
+    try {
+        myReaction.Print();
+        myReaction.Loop(1000000);
+    } catch (const std::exception& e) {
+        std::cerr << "Error during simulation: " << e.what()
+                  << std::endl;
+    }
 }
