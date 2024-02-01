@@ -16,7 +16,7 @@ ReactionSimulation::ReactionSimulation() {
     angularFunc = new TF1(const_cast<char*>("Angular"),
                           const_cast<char*>("gaus"), 
                           -TMath::Pi(), TMath::Pi());
-    angularFunc->SetParameters(1.0, 0.0, 0.07);
+    angularFunc->SetParameters(1.0, 0.0, 0.1);
     smear->SetReaction(const_cast<char*>("p + d"));
     smear->SetMomentumFunction(momentumFunc);
     smear->SetAngularSmearing(angularFunc);
