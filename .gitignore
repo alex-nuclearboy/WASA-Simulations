@@ -44,7 +44,7 @@ run_*.log
 generator
 
 # CMake folder
-/build
+build/
 
 # Debug files
 *.dSYM/
