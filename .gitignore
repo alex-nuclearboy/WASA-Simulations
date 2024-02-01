@@ -3,6 +3,7 @@
 run_*.sh
 run_*.log
 *.sh.*
+output_wmc*.log
 
 # Prerequisites
 *.d
