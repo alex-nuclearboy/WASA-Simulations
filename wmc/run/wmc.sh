@@ -6,35 +6,38 @@
 # Modified: 2024-02-01 by khreptak
 #******************************************************************************
 
-# Display current date and host name
-date
-hostname
+# Display start time and host information
+echo "Starting WASA Monte Carlo simulation at: $(date)"
+echo "Running on host: $(hostname)"
 
 echo "-----------------------------------------------------------------------"
-echo "      WASA Monte Carlo Run $1"
+echo "      Initiating WASA Monte Carlo Simulation for: $1"
 echo "-----------------------------------------------------------------------"
 
-# Ensure the WASA_ROOT and SYSTEM environment variables are defined
+# Validate necessary environment variables
 if ( ! $?WASA_ROOT ) then
-    echo "Environment variable WASA_ROOT is not defined. Exiting."
+    echo "ERROR: Environment variable WASA_ROOT is not defined. Exiting."
+    exit 1
+endif
+
+if ( "$SYSTEM" == "" ) then
+    echo "ERROR: System type (SYSTEM variable) is not defined. Set to Linux or OSF1. Exiting."
     exit 1
 endif
 
 # Setup environment variables
+echo "Configuring environment variables..."
 setenv RWLIB_ROOT	$WASA_ROOT/../RWlib
 if ( ! -d "$RWLIB_ROOT" ) then
-    echo "RWLIB_ROOT directory was not found. Exiting."
+    echo "ERROR: RWLIB_ROOT directory ($RWLIB_ROOT) was not found. Exiting."
     exit 1
 endif
+
 setenv LD_LIBRARY_PATH $RWLIB_ROOT/lib:${LD_LIBRARY_PATH}
-echo "LD_LIBRARY_PATH is set to: $LD_LIBRARY_PATH"
+echo "Environment setup completed. LD_LIBRARY_PATH is set to: $LD_LIBRARY_PATH"
 
-# Determine the system and set variables accordingly
-if ( "$SYSTEM" == "" ) then
-    echo "UserVariable SYSTEM is not set. Should be set to Linux or OSF1. Exiting."
-    exit 1
-endif
-
+# System-specific configurations
+echo "Configuring system-specific settings for $SYSTEM..."
 setenv UNAME $SYSTEM
 
 if ( $UNAME == "OSF1" ) then
@@ -49,41 +52,42 @@ if ( $UNAME == "Linux" ) then
     setenv TIME     '/usr/bin/time'
 endif
 
-echo "Setup links for Monte-Carlo program"
+echo "System configuration completed."
+
+# Preparing simulation environment
+echo "Preparing simulation environment..."
 rm -f fort.* >& /dev/null
 rm -f epio41 epio42 pluto.root >& /dev/null
 rm -f etap.ems >& /dev/null
 
-# Input and Output
+# Configure input and output
 ln -s  $1 pluto.root
 ln -s  $2 etap.ems
 
-# Kinematic event input text file
+# Configure kinematic event input text file and alignment files
 ln -s  $WASA_ROOT/examples/evg/etap.out     fort.31
 ln -s  etap.epo     epio41
 ln -s  etap.ems     epio42
 
-# ALIGMENT FILES
+# Linking alignment files
 $WASA_ROOT/alig/links.sh
 ln -s $WASA_ROOT/alig/al4cosy0_mc_009.dat042    fort.13
 
-# USER CARDS
+# Process user cards
 m4 -I$WASA_ROOT/alig/m4 -P wmc.dat.m4 > wmc.dat
 ln -s wmc.dat   fort.4
 
-echo "Running Main Program WMC"
+echo "Simulation environment prepared. Starting main program..."
 $NICE $TIME $WASA_ROOT/examples/wmc3/src/wmc.exe
 
-echo "Cleaning up temporary files"
+# Clean up the simulation environment
+echo "Cleaning up temporary files..."
 rm -f fort.* >& /dev/null
-rm -f epio41 epio42 pluto.root >& /dev/null
-if ( -z test.epo ) then
+rm -f epio41 epio42 pluto.root etap.ems >& /dev/null
+if ( -e test.epo ) then
     rm -f test.epo >& /dev/null
 endif
 
 # Display completion message
-echo "Script execution completed."
-date
-
-# Exit the script
+echo "WASA Monte Carlo simulation completed at: $(date)"
 exit 0
