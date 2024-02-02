@@ -7,8 +7,8 @@
 #******************************************************************************
 
 # Display start time and host information
-echo "Starting WASA Monte Carlo simulation at: $(date)"
-echo "Running on host: $(hostname)"
+echo "Starting WASA Monte Carlo simulation at: `date`"
+echo "Running on host: `hostname`"
 
 echo "-----------------------------------------------------------------------"
 echo "      Initiating WASA Monte Carlo Simulation for: $1"
@@ -25,6 +25,13 @@ if ( "$SYSTEM" == "" ) then
     exit 1
 endif
 
+# Check alignment file existence
+if ( ! -f ${WASA_ROOT}/alig/al4cosy0_mc_009.dat042 ) then
+    echo "ERROR: Alignment file not found: ${WASA_ROOT}/alig/al4cosy0_mc_009.dat042"
+    echo "Please run the configuration script for the corresponding experimental setup first."
+    exit 1
+endif
+
 # Setup environment variables
 echo "Configuring environment variables..."
 setenv RWLIB_ROOT	$WASA_ROOT/../RWlib
@@ -37,7 +44,7 @@ setenv LD_LIBRARY_PATH $RWLIB_ROOT/lib:${LD_LIBRARY_PATH}
 echo "Environment setup completed. LD_LIBRARY_PATH is set to: $LD_LIBRARY_PATH"
 
 # System-specific configurations
-echo "Configuring system-specific settings for $SYSTEM..."
+echo "Configuring system-specific settings..."
 setenv UNAME $SYSTEM
 
 if ( $UNAME == "OSF1" ) then
@@ -89,5 +96,5 @@ if ( -e test.epo ) then
 endif
 
 # Display completion message
-echo "WASA Monte Carlo simulation completed at: $(date)"
+echo "WASA Monte Carlo simulation completed at: `date`"
 exit 0
