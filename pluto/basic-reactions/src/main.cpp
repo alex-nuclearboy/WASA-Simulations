@@ -1,81 +1,77 @@
 #include <iostream>
 #include <sstream>
-#include <vector>
 #include <string>
-#include "ReactionSimulation.h"
+#include "reaction_generator.h"
 #include <TSystem.h>
 #include <TROOT.h>
 
-// Combine final product names and create a filename
-void processArguments(int argc, char** argv,std::string& finalProducts,
-                      std::string& filename) {
+// Combine final product names and create a file name
+void processArguments(int argc, char** argv,std::string& final_products,
+                      std::string& file_name) 
+{
     for (int i = 1; i < argc; ++i) {
-        finalProducts += argv[i];
-        finalProducts += (i < argc - 1) ? " " : "";
-        filename += argv[i];
+        final_products += argv[i];
+        final_products += (i < argc - 1) ? " " : "";
+        file_name += argv[i];
     }
 }
 
-void printLoadedLibraries() {
-    TString listOfLibraries = gSystem->GetLibraries();
-    std::cout << "Loaded libraries: " << listOfLibraries.Data() 
-              << std::endl;
+void printLoadedLibraries() 
+{
+    TString libraries_list = gSystem->GetLibraries();
+    std::cout << "Loaded libraries: " << libraries_list.Data() << std::endl;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " product1 product2 ..."
+        std::cerr << "Usage: " << argv[0] << " product1 product2 ..." 
                   << std::endl;
         return 1;
     }
     
-    std::string finalProducts;
-    std::string filename;
+    std::string final_products;
+    std::string file_name;
     
-    processArguments(argc, argv, finalProducts, filename);
+    processArguments(argc, argv, final_products, file_name);
     
-    // Initialize ROOT abd PLUTO
+    // Initialize ROOT and PLUTO libraries
     const char* libraries[] = {
-        "libMatrix.so", "libHist.so", "libPhysics.so",
-        "libRIO.so", "libTree.so", "libTreeViewer.so",
-        "${PLUTOSYS}/libPluto.so"
+        "libMatrix.so", "libHist.so", "libPhysics.so", "libRIO.so", 
+        "libTree.so", "libTreeViewer.so", "${PLUTOSYS}/libPluto.so"
         };
     
-    printLoadedLibraries();
+    bool all_loaded = true;
     
-    bool allLoaded = true;
-    
-    for (const char* library : libraries) {
-        
-        const char* libraryPath = gSystem->DynamicPathName(library, kTRUE);
-        
-        if (!libraryPath) {
-            if (gSystem->Load(library)) {
-                printf("Shared library %s loaded\n", library);
+    for (int i = 0; i < sizeof(libraries)/sizeof(libraries[0]); ++i) {
+        const char* library = libraries[i];
+        if (!gSystem->DynamicPathName(library, kTRUE)) {
+            if (gSystem->Load(library) == -1) {
+                std::cerr << "Unable to load " << library << std::endl;
+                all_loaded = false;
             } else {
-                printf("Unable to load %s\n", library);
-                allLoaded = false;
+                std::cout << "Shared library " << library << " loaded" 
+                          << std::endl;
             }
-        } else {
-            printf("Library %s is already loaded at %s\n", 
-                    library, libraryPath);
         }
     }
     
-    if (allLoaded) {
+    if (all_loaded) {
         gSystem->SetIncludePath("-I${PLUTOSYS}/src");
-        printf("All libraries loaded successfully.\n");
+        std::cerr << "All libraries loaded successfully." << std::endl;
     } else {
-        printf("Some libraries failed to load.\n");
+        std::cerr << "Some libraries failed to load." << std::endl;
     }
+
+    printLoadedLibraries();
     
     // Perform reaction simulation
-    ReactionSimulation react;
+    ReactionGenerator gen;
     
     for (int runindex = 0; runindex < 10; ++runindex) {
         std::cout << "Running simulation iteration "
                   << runindex + 1 << "/10..." << std::endl;
-        react.simulate(finalProducts, filename, runindex + 1);
+        gen.simulate(final_products, file_name, runindex + 1);
     }
     
     std::cout << "Simulation completed successfully." << std::endl;

@@ -1,15 +1,18 @@
-cmake_minimum_required(VERSION 3.12)
-set(CMAKE_CXX_STANDARD 11)
+cmake_minimum_required(VERSION 3.20)
 
-project(ReactionSimulation)
+project(ReactionGenerator)
 
-# Find ROOT Config
+# Ensure C++98 compatibility
+set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find ROOT package
 find_program(ROOT_CONFIG_EXEC root-config)
 if(NOT ROOT_CONFIG_EXEC)
     message(FATAL_ERROR "Failed to find root-config. Make sure ROOT is correctly installed.")
 endif()
 
-# Include directories for PLUTO and ROOT
+# Include directories for PLUTO
 if(NOT $ENV{PLUTOSYS} STREQUAL "")
     link_directories($ENV{PLUTOSYS})
     include_directories(
@@ -37,11 +40,12 @@ execute_process(COMMAND ${ROOT_CONFIG_EXEC} --libs OUTPUT_VARIABLE ROOT_LIBRARIE
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 
 # Define the executable and specify source files
-add_executable(generator src/main.cpp src/ReactionSimulation.cpp)
+add_executable(pluto_run src/main.cpp src/reaction_generator.cpp)
 
 # Link the executable with ROOT libraries and PLUTO library
-target_link_libraries(generator ${ROOT_LIBRARIES} $ENV{PLUTOSYS}/libPluto.so)
+target_link_libraries(pluto_run ${ROOT_LIBRARIES} $ENV{PLUTOSYS}/libPluto.so)
 
 # Set output directory and additional compile options
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 add_compile_options(-Wall -Wextra -pedantic)
+
