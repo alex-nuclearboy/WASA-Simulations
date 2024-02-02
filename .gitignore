@@ -42,7 +42,7 @@ output_wmc*.log
 *.i*86
 *.x86_64
 *.hex
-generator
+pluto_run
 
 # CMake folder
 build/
