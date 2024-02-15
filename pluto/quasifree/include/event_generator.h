@@ -8,11 +8,11 @@ public:
     EventGenerator();
     void setGraph(TGraph* graph);
     void generatePlot();
-    std::vector<std::pair<double, double>> getCalculatedData();
+    std::vector<std::pair<double, double> > getCalculatedData();
 
 private:
     TGraph* graph;
-    std::vector<std::pair<double, double>> calculated_data;
+    std::vector<std::pair<double, double> > calculated_data;
 };
 
 #endif // EVENTGENERATOR_H
