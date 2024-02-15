@@ -1,20 +1,22 @@
-#ifndef DATAWRITER_H
-#define DATAWRITER_H
+#ifndef DATA_WRITER_H
+#define DATA_WRITER_H
 
 #include <string>
+#include <vector>
 #include "TFile.h"
 #include "TGraph.h"
+#include "TTree.h"
 
 class DataWriter {
 public:
-    DataWriter(const std::string& file_name);
+    DataWriter();
     ~DataWriter();
     void writeTree(TGraph* graph);
     void writeProtonData(const std::vector<std::pair<double, double> >& data, const std::string& file_name);
+    void writeSimulationData(TTree* tree, const std::string& file_name);
 
 private:
-    //std::string file_name;
-    TFile* file;
+    TFile* file_;
 };
 
-#endif // DATAWRITER_H
+#endif // DATA_WRITER_H

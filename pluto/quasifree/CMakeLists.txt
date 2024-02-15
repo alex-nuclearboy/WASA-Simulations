@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.0)
-project(EventGenerator)
+cmake_minimum_required(VERSION 2.6)
+project(QuasiFreeReactionGenerator)
 
 # Ensure C++98 compatibility
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Find ROOT package
 find_program(ROOT_CONFIG_EXEC root-config)
@@ -33,7 +35,6 @@ if(NOT $ENV{PLUTOSYS} STREQUAL "")
 )
 endif()
 
-# Include directories
 include_directories(${ROOT_INCLUDE_DIRS})
 
 # Execute root-config to get compiler flags and libraries
@@ -52,5 +53,5 @@ set(SOURCES
 # Define the executable that will be built from the source files
 add_executable(run_simulate ${SOURCES})
 
-# Link against ROOT libraries
-target_link_libraries(run_simulate ${ROOT_LIBRARIES})
+# Link the executable with ROOT and PLUTO libraries
+target_link_libraries(run_simulate ${ROOT_LIBRARIES} $ENV{PLUTOSYS}/libPluto.so)
