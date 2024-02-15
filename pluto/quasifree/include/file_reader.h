@@ -1,5 +1,5 @@
-#ifndef FILEREADER_H
-#define FILEREADER_H
+#ifndef FILE_READER_H
+#define FILE_READER_H
 
 #include <string>
 #include "TGraph.h"
@@ -13,4 +13,4 @@ private:
     std::string file_path;
 };
 
-#endif // FILEREADER_H
+#endif // FILE_READER_H
