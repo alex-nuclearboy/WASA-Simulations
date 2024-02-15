@@ -43,7 +43,7 @@ void EventGenerator::generatePlot()
     
 }
 
-std::vector<std::pair<double, double>> EventGenerator::getCalculatedData() 
+std::vector<std::pair<double, double> > EventGenerator::getCalculatedData() 
 {
     return calculated_data;
 }

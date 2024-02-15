@@ -13,10 +13,11 @@ int main(int argc, char** argv) {
         return 1;
     }
     std::string model_name = argv[1];
-    std::map<std::string, std::string> model_to_file_map = {
-        {"paris", "../momentum_distributions/paris_momentum_distribution.txt"},
-        {"cdbonn", "../momentum_distributions/cdbonn_momentum_distribution.txt"}        
-    };
+    std::map<std::string, std::string> model_to_file_map;
+    model_to_file_map["paris"] = "../momentum_distributions/paris_momentum_distribution.txt";
+    model_to_file_map["cdbonn"] = "../momentum_distributions/cdbonn_momentum_distribution.txt";
+
+    
 
     std::string file_path = model_to_file_map[model_name];
     if (file_path.empty()) {
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
         file_name_stream << "${PLUTO_OUTPUT}/pd-ppn_spec-" << model_name << "-" << iteration << ".root";
         std::string file_name = file_name_stream.str();
 
-        std::vector<std::pair<double, double>> calculated_data = eventGenerator.getCalculatedData();;
+        std::vector<std::pair<double, double> > calculated_data = eventGenerator.getCalculatedData();;
 
         // Generate a text file name similar to the ROOT file name
         std::ostringstream text_file_name_stream;

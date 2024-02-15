@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <stdexcept>
 
 FileReader::FileReader(const std::string& file_path) : file_path(file_path) {}
 

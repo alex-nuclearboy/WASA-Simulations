@@ -10,7 +10,7 @@ public:
     DataWriter(const std::string& file_name);
     ~DataWriter();
     void writeTree(TGraph* graph);
-    void writeProtonData(const std::vector<std::pair<double, double>>& data, const std::string& file_name);
+    void writeProtonData(const std::vector<std::pair<double, double> >& data, const std::string& file_name);
 
 private:
     //std::string file_name;
