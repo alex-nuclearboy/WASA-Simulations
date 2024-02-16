@@ -90,11 +90,16 @@ int main(int argc, char** argv) {
         // Write results
         eventGenerator.generateEvents(1000);
 
+        std::vector<std::pair<double, double> > collected_data = eventGenerator.getProtonData();
+
+
         DataWriter dataWriter;
         //dataWriter.writeSimulationData(tree, file_name);
 
+       
+
         // Write the calculated data to a text file
-        dataWriter.writeProtonData(calculated_data, text_file_name);
+        dataWriter.writeProtonData(collected_data, text_file_name);
     }
 
     // Cleanup

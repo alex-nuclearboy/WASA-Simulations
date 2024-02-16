@@ -8,6 +8,13 @@
 #include "TClonesArray.h"
 #include "TLorentzVector.h"
 
+struct ParticleData {
+    std::string name;
+    TLorentzVector vector;
+    ParticleData(const std::string& n, const TLorentzVector& v)
+        : name(n), vector(v) {}
+};
+
 class EventGenerator {
 public:
     explicit EventGenerator(const std::string& file_name);
@@ -16,11 +23,24 @@ public:
     void calculate();
     void generateEvents(int num_events);
     std::vector<std::pair<double, double> > getCalculatedData() const;
+    std::vector<std::pair<double, double> > getProtonData() const { return proton_data; }
 
-private:
+private:    
     void setupTree();
     void cleanup();
 
+    std::vector<std::pair<double, double> > proton_data;
+
+    Double_t calculateEnergy(Double_t momentum, Double_t mass);
+    Double_t calculateEffectiveProtonMass(Double_t momentum);
+    Double_t calculateEffectiveProtonMomentum(Double_t beam_energy, Double_t target_proton_energy, Double_t beam_momentum, Double_t target_proton_momentum, Double_t angle);
+    Double_t calculateMomentum(Double_t px, Double_t py, Double_t pz);
+    Double_t calculateInvariantMass(Double_t beam_mass, Double_t target_mass, Double_t beam_energy);
+    Double_t calculateBetaCM(Double_t beam_momentum, Double_t beam_mass, Double_t target_mass);
+    Double_t calculateGammaCM(Double_t betaCM);
+    TLorentzVector createFourVector(double mass, double momentum = 0, double theta = 0, double phi = 0);
+    void setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData);
+    
     TGraph* graph_;
     std::string file_name_;
     TTree* tree_;
@@ -30,6 +50,8 @@ private:
     static const double PROTON_MASS;
     static const double NEUTRON_MASS;
     static const double DEUTERON_MASS;
+    static const double BEAM_MOMENTUM_MIN;
+    static const double BEAM_MOMENTUM_MAX;
 
     TLorentzVector finalStateParticles[2];
 
