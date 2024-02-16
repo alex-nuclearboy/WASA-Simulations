@@ -64,6 +64,7 @@ dkms.conf
 
 # Proton variables files
 ProtonVariables-*.txt
+proton_momentum_theta-*.txt
 
 # WMC
 etap.*
