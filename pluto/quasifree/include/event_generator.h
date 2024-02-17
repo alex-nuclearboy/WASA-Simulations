@@ -7,6 +7,7 @@
 #include "TTree.h"
 #include "TClonesArray.h"
 #include "TLorentzVector.h"
+#include "data_writer.h"
 
 struct ParticleData {
     std::string name;
@@ -17,38 +18,49 @@ struct ParticleData {
 
 class EventGenerator {
 public:
-    explicit EventGenerator(const std::string& file_name);
+    EventGenerator(
+        TGraph* graph, DataWriter& writer, const std::string& particlesFile, 
+        const std::string& calculationsFile, const std::string& protonDataFile);
     ~EventGenerator();
     void setGraph(TGraph* graph);
     void generateEvents(int num_events);
-    std::vector<std::pair<double, double> > getProtonData() const { return proton_data; }
 
-private:    
+    std::vector<std::pair<Double_t, Double_t> > getProtonData() const { return proton_data; }
+
+    TTree* getParticlesTree() const { return tree_; }
+    //TTree* getCalculationsTree() const { return calculations_tree_; }
+
+private:
     void setupTree();
     void cleanup();
 
+    DataWriter& writer_;
+
     std::vector<std::pair<double, double> > proton_data;
 
+    std::string particlesFileName_;
+    std::string calculationsFileName_;
+    std::string protonDataFileName_;
+
+    TTree* particlesTree_;
+    TTree* calculationsTree_;
+    
     
     void setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData);
+
+    std::string file_name_;
     
     TGraph* graph_;
-    std::string file_name_;
     TTree* tree_;
     TClonesArray* particles_;
-    std::vector<std::pair<double, double> > calculated_data_;
-
-    static const double PROTON_MASS;
-    static const double NEUTRON_MASS;
-    static const double DEUTERON_MASS;
-    static const double BEAM_MOMENTUM_MIN;
-    static const double BEAM_MOMENTUM_MAX;
-
-    TLorentzVector finalStateParticles[2];
-
+ 
     Int_t   Npart_;
     Float_t Impact_;
     Float_t Phi_;
+
+    Double_t momentum_;
+
+    
 
 };
 

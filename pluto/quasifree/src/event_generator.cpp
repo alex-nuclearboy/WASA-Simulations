@@ -18,14 +18,14 @@ const double deuteron_mass = Constants::DEUTERON_MASS;
 
 RandomGenerator rand_gen;
 
-EventGenerator::EventGenerator(const std::string& file_name) : file_name_(file_name), tree_(NULL), particles_(NULL), graph_(NULL)
-{
-    setupTree();
+EventGenerator::EventGenerator(TGraph* graph, DataWriter& writer, const std::string& particlesFile, const std::string& calculationsFile, const std::string& protonDataFile)
+: graph_(graph), writer_(writer), particlesFileName_(particlesFile), calculationsFileName_(calculationsFile), protonDataFileName_(protonDataFile) {
+   //setupTree();
 }
 
 EventGenerator::~EventGenerator() 
 {
-    cleanup();
+   // cleanup();
 }
 
 void EventGenerator::setGraph(TGraph* graph) 
@@ -34,27 +34,29 @@ void EventGenerator::setGraph(TGraph* graph)
 }
 
 void EventGenerator::setupTree() 
-{
-    TFile* file = new TFile(file_name_.c_str(), "RECREATE");
-    if (!file || !file->IsOpen()) {
-        std::cerr << "Failed to open file: " << file_name_ << std::endl;
-        return;
-    }
-
+{ 
     Npart_ = 3;
     Impact_ = 0;
     Phi_ = 0;
 
-    particles_ = new TClonesArray("PParticle", 3);
+    particles_ = new TClonesArray("PParticle", Npart_);
 
-    tree_ = new TTree("data", "Simulation Data");
-    tree_->Branch("Npart",&Npart_,"Npart/I");
-    tree_->Branch("Impact",&Impact_,"Impact/F");
-    tree_->Branch("Phi",&Phi_,"Phi/F");
-    tree_->Branch("Particles", &particles_);
+    // Setup for particlesTree_
+    particlesTree_ = new TTree("data", "Particles Tree");
+
+    // Define branches for `particlesTree_`
+    particlesTree_->Branch("Npart", &Npart_, "Npart/I");
+    particlesTree_->Branch("Impact", &Impact_, "Impact/F");
+    particlesTree_->Branch("Phi", &Phi_, "Phi/F");
+    particlesTree_->Branch("Particles", &particles_);
+
+    // Setup for calculationsTree_
+    calculationsTree_ = new TTree("values", "Simulation Data");
+    // Define branches for `calculationsTree_`
+    calculationsTree_->Branch("Momentum", &momentum_, "Momentum/D");
+
+    
 }
-
-
 
 void EventGenerator::setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData) 
 {
@@ -67,8 +69,11 @@ void EventGenerator::setParticles(TClonesArray* particlesArray, const std::vecto
 }
 
 void EventGenerator::generateEvents(int num_events)
-{
-    if (!tree_ || !particles_) {
+{ 
+    setupTree();
+    
+
+    if (!particlesTree_ || !calculationsTree_ || !particles_) {
         std::cerr << "Tree or Particles array not initialized." << std::endl;
         return;
     }
@@ -82,24 +87,26 @@ void EventGenerator::generateEvents(int num_events)
         Double_t beam_momentum_lab = rand_gen.generate(Constants::BEAM_MOMENTUM_MIN, Constants::BEAM_MOMENTUM_MAX);
         Double_t beam_energy_lab = PhysicsCalculator::calculateEnergy(beam_momentum_lab, proton_mass);
 
+        
+
         TVector3 beam_vector;
         beam_vector.SetMagThetaPhi(beam_momentum_lab, 0., 0.);
         
         TLorentzVector beam_4vector = PhysicsCalculator::createFourVector(proton_mass, beam_momentum_lab, 0, 0);
         TLorentzVector target_4vector = PhysicsCalculator::createFourVector(deuteron_mass, 0, 0, 0);
 
-        //TLorentzVector total_4vector = beam_4vector + target_4vector;
+        TLorentzVector total_4vector = beam_4vector + target_4vector;
 
         TLorentzVector beam_proton_4vector = PhysicsCalculator::createFourVector(proton_mass, beam_momentum_lab, 0, 0);
 
-        //Double_t inv_mass = PhysicsCalculator::calculateInvariantMass(proton_mass, deuteron_mass, beam_energy_lab); // Invariant mass of the colliding particles
+        Double_t inv_mass = PhysicsCalculator::calculateInvariantMass(proton_mass, deuteron_mass, beam_energy_lab); // Invariant mass of the colliding particles
 
         /* CM FRAME */
-        //Double_t beta_cm = PhysicsCalculator::calculateBetaCM(beam_momentum_lab, proton_mass, deuteron_mass);
-        //Double_t gamma_cm = PhysicsCalculator::calculateGammaCM(beta_cm);
+        Double_t beta_cm = PhysicsCalculator::calculateBetaCM(beam_momentum_lab, proton_mass, deuteron_mass);
+        Double_t gamma_cm = PhysicsCalculator::calculateGammaCM(beta_cm);
 
-        //Double_t beam_momentum_cm = beam_momentum_lab + beta_cm * gamma_cm * ((gamma_cm * beta_cm * beam_momentum_lab / (gamma_cm + 1)) - beam_energy_lab);
-        //Double_t beam_energy_cm = gamma_cm * (beam_energy_lab - beta_cm * beam_momentum_lab);
+        Double_t beam_momentum_cm = beam_momentum_lab + beta_cm * gamma_cm * ((gamma_cm * beta_cm * beam_momentum_lab / (gamma_cm + 1)) - beam_energy_lab);
+        Double_t beam_energy_cm = gamma_cm * (beam_energy_lab - beta_cm * beam_momentum_lab);
 
         /* Deuteron CM frame */
         Double_t target_nucleon_cos_theta_cm = rand_gen.generate(-1, 1);        // Random cos(theta) for nucleon inside target
@@ -124,6 +131,11 @@ void EventGenerator::generateEvents(int num_events)
         Double_t target_nucleon_mom_distr = graph_->Eval(target_nucleon_momentum_cm);
 
         if (target_nucleon_mom_distr > target_nucleon_mom_random) {
+
+            momentum_ = beam_momentum_lab;
+
+            calculationsTree_->Fill();
+
 
             /* Neutron spectator */            
             Double_t target_neutron_px_cm = target_nucleon_px_cm;
@@ -161,7 +173,7 @@ void EventGenerator::generateEvents(int num_events)
             Double_t proton_proton_angle = beam_vector.Angle(target_proton_vector_cm);  // [rad] - angle between the momenta of protons
             Double_t effective_proton_momentum = PhysicsCalculator::calculateEffectiveProtonMomentum(beam_energy_lab, target_proton_energy_cm, beam_momentum_lab, target_proton_momentum_cm, proton_proton_angle, effective_proton_mass);
             
-            //TLorentzVector beam_proton_4vector_lab = PhysicsCalculator::createFourVector(proton_mass, effective_proton_momentum, 0, 0);
+            TLorentzVector beam_proton_4vector_lab = PhysicsCalculator::createFourVector(proton_mass, effective_proton_momentum, 0, 0);
 
             /* Proton-proton CM frame */
             TVector3 b = proton_proton_4vector.BoostVector();    // Transform to proton-proton CM frame (using 4-vectors calculated in proton-deuteron LAB frame)
@@ -209,23 +221,42 @@ void EventGenerator::generateEvents(int num_events)
 
             setParticles(particles_, event_particles);
 
-            tree_->Fill();
+            particlesTree_->Fill();
 
             i++;
         }        
     }
-
+/*
     TFile* file = tree_->GetCurrentFile(); // Get the file associated with the TTree
     if (file) {
         file->Write();
         file->Close(); // This also deletes the TTree
     }
-    
+    */
+
+    writer_.writeTreeToFile(particlesTree_, particlesFileName_);
+    writer_.writeTreeToFile(calculationsTree_, calculationsFileName_);
+    writer_.writeProtonData(proton_data, protonDataFileName_);
+
+    cleanup();
 }
 
 void EventGenerator::cleanup() 
 {    
-    if (particles_) {
+    // Clean up particlesTree_
+    if (particlesTree_ != NULL) {
+        delete particlesTree_; // This also frees memory allocated for branches
+        particlesTree_ = NULL;
+    }
+
+    // Clean up calculationsTree_
+    if (calculationsTree_ != NULL) {
+        delete calculationsTree_;
+        calculationsTree_ = NULL;
+    }
+
+    // If using dynamic memory for particles_, ensure it is properly deleted
+    if (particles_ != NULL) {
         delete particles_;
         particles_ = NULL;
     }
