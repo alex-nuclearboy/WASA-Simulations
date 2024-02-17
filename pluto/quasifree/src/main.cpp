@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include <TGraph.h>
+#include "TGraph.h"
 #include "TTree.h"
 #include "TSystem.h"
 
@@ -63,8 +63,8 @@ int main(int argc, char** argv) {
 
     printLoadedLibraries();
 
-    FileReader fileReader(model_file_path);
-    TGraph* graph = fileReader.read_data();
+    FileReader file_reader(model_file_path);
+    TGraph* graph = file_reader.read_data();
 
     const int num_iterations = 10;
     for (int iteration = 1; iteration <= num_iterations; ++iteration) {       
@@ -77,9 +77,6 @@ int main(int argc, char** argv) {
         EventGenerator eventGenerator(file_name);
 
         eventGenerator.setGraph(graph);
-        eventGenerator.calculate();
-
-        std::vector<std::pair<double, double> > calculated_data = eventGenerator.getCalculatedData();
 
         // Generate a text file name similar to the ROOT file name
         std::ostringstream text_file_name_stream;
@@ -94,9 +91,6 @@ int main(int argc, char** argv) {
 
 
         DataWriter dataWriter;
-        //dataWriter.writeSimulationData(tree, file_name);
-
-       
 
         // Write the calculated data to a text file
         dataWriter.writeProtonData(collected_data, text_file_name);

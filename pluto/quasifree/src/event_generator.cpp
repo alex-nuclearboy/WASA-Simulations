@@ -33,24 +33,6 @@ void EventGenerator::setGraph(TGraph* graph)
     this->graph_ = graph;
 }
 
-void EventGenerator::calculate() 
-{
-    if (!graph_) {
-        std::cerr << "Graph not set." << std::endl;
-        return;
-    }
-
-    int n = graph_->GetN();
-    double x, y;
-    calculated_data_.clear();
-    for (int i = 0; i < n; ++i) {
-        graph_->GetPoint(i, x, y);
-        double new_momentum = x + 0.01; // Example calculation
-        double new_probability = y; // Example new probability calculation
-        calculated_data_.push_back(std::make_pair(new_momentum, new_probability));
-    }
-}
-
 void EventGenerator::setupTree() 
 {
     TFile* file = new TFile(file_name_.c_str(), "RECREATE");
@@ -72,53 +54,10 @@ void EventGenerator::setupTree()
     tree_->Branch("Particles", &particles_);
 }
 
-Double_t EventGenerator::calculateEnergy(Double_t momentum, Double_t mass) 
+
+
+void EventGenerator::setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData) 
 {
-    return sqrt(pow(momentum, 2) + pow(mass, 2));
-}
-
-Double_t EventGenerator::calculateEffectiveProtonMass(Double_t momentum) 
-{
-    return sqrt(pow(DEUTERON_MASS, 2) + pow(NEUTRON_MASS, 2) - 2 * DEUTERON_MASS * sqrt(pow(NEUTRON_MASS, 2) + pow(momentum, 2)));
-}
-
-Double_t EventGenerator::calculateEffectiveProtonMomentum(
-    Double_t beam_energy, Double_t target_proton_energy, Double_t beam_momentum, Double_t target_proton_momentum, Double_t angle) 
-{
-    Double_t protons_inv_mass = pow(beam_energy + target_proton_energy, 2) - pow(beam_momentum, 2) - pow(target_proton_momentum, 2) - 2 * beam_momentum * target_proton_momentum * TMath::Cos(angle);
-    Double_t part = (protons_inv_mass - pow(PROTON_MASS, 2) - pow(calculateEffectiveProtonMass(target_proton_momentum), 2)) / (2 * calculateEffectiveProtonMass(target_proton_momentum));
-    return sqrt(pow(part, 2) - pow(PROTON_MASS, 2));
-}
-
-Double_t EventGenerator::calculateMomentum(Double_t px, Double_t py, Double_t pz) 
-{
-    return sqrt(pow(px, 2) + pow(py, 2) + pow(pz, 2));
-}
-
-Double_t EventGenerator::calculateInvariantMass(Double_t beam_mass, Double_t target_mass, Double_t beam_energy) 
-{
-    return sqrt(pow(beam_mass, 2) + pow(target_mass, 2) + 2 * target_mass * beam_energy);
-}
-
-Double_t EventGenerator::calculateBetaCM(Double_t beam_momentum, Double_t beam_mass, Double_t target_mass) 
-{
-    return beam_momentum / (target_mass + sqrt(pow(beam_mass, 2) + pow(beam_momentum, 2)));
-}
-
-Double_t EventGenerator::calculateGammaCM(Double_t betaCM) {
-    return 1 / (sqrt(1 - betaCM * betaCM));
-}
-
-TLorentzVector EventGenerator::createFourVector(double mass, double momentum, double theta, double phi) 
-{
-    TVector3 vec;
-    vec.SetMagThetaPhi(momentum, theta, phi);
-    TLorentzVector vec4;
-    vec4.SetVectM(vec, mass);
-    return vec4;
-}
-
-void EventGenerator::setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData) {
     particlesArray->Clear();
 
     for (size_t i = 0; i < particlesData.size(); ++i) {
@@ -292,9 +231,3 @@ void EventGenerator::cleanup()
     }
 }
 
-
-
-
-std::vector<std::pair<double, double> > EventGenerator::getCalculatedData() const {
-    return calculated_data_;
-}
