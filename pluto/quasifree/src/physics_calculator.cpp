@@ -16,10 +16,10 @@ Double_t PhysicsCalculator::calculateEffectiveProtonMass(Double_t target_proton_
     return TMath::Sqrt(DEUTERON_MASS * DEUTERON_MASS + NEUTRON_MASS * NEUTRON_MASS - 2 * DEUTERON_MASS * TMath::Sqrt(NEUTRON_MASS * NEUTRON_MASS + target_proton_momentum * target_proton_momentum));
 }
 
-Double_t PhysicsCalculator::calculateEffectiveProtonMomentum(Double_t beam_energy, Double_t target_proton_energy, Double_t beam_momentum, Double_t target_proton_momentum, Double_t angle)
+Double_t PhysicsCalculator::calculateEffectiveProtonMomentum(Double_t beam_proton_energy, Double_t target_proton_energy, Double_t beam_proton_momentum, Double_t target_proton_momentum, Double_t angle, Double_t effective_proton_mass)
 {
-    Double_t protons_inv_mass = (beam_energy + target_proton_energy) * (beam_energy + target_proton_energy) - beam_momentum * beam_momentum - target_proton_momentum * target_proton_momentum - 2 * beam_momentum * target_proton_momentum * TMath::Cos(angle);
-    Double_t part = (protons_inv_mass - PROTON_MASS * PROTON_MASS - calculateEffectiveProtonMass(target_proton_momentum) * calculateEffectiveProtonMass(target_proton_momentum)) / (2 * calculateEffectiveProtonMass(target_proton_momentum));
+    Double_t protons_inv_mass = (beam_proton_energy + target_proton_energy) * (beam_proton_energy + target_proton_energy) - beam_proton_momentum * beam_proton_momentum - target_proton_momentum * target_proton_momentum - 2 * beam_proton_momentum * target_proton_momentum * TMath::Cos(angle);
+    Double_t part = (protons_inv_mass - PROTON_MASS * PROTON_MASS - effective_proton_mass * effective_proton_mass) / (2 * effective_proton_mass);
     return TMath::Sqrt(part * part - PROTON_MASS * PROTON_MASS);
 }
 

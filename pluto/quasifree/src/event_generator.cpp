@@ -159,7 +159,7 @@ void EventGenerator::generateEvents(int num_events)
             TLorentzVector proton_proton_4vector = beam_proton_4vector + target_proton_4vector;
             
             Double_t proton_proton_angle = beam_vector.Angle(target_proton_vector_cm);  // [rad] - angle between the momenta of protons
-            Double_t effective_proton_momentum = calculateEffectiveProtonMomentum(beam_energy_lab, target_proton_energy_cm, beam_momentum_lab, target_proton_momentum_cm, proton_proton_angle);
+            Double_t effective_proton_momentum = calculateEffectiveProtonMomentum(beam_energy_lab, target_proton_energy_cm, beam_momentum_lab, target_proton_momentum_cm, proton_proton_angle, effective_proton_mass);
             
             //TLorentzVector beam_proton_4vector_lab = createFourVector(PROTON_MASS, effective_proton_momentum, 0, 0);
 
