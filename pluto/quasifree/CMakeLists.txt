@@ -46,6 +46,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 set(SOURCES
     src/main.cpp
     src/file_reader.cpp
+    src/physics_calculator.cpp
     src/event_generator.cpp
     src/data_writer.cpp
 )

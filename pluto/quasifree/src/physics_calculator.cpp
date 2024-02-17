@@ -1,9 +1,27 @@
-#include "PhysicsCalculator.h"
+/** 
+ * @file physics_calculator.cpp
+ * @author AK <alex.nuclearboy@gmail.com>
+ * @brief Implementation of the PhysicsCalculator class for calculations 
+ *        within the event generator of simulations of quasi-elastic scattering.
+ * 
+ * @details The PhysicsCalculator class is designed to support the simulation 
+ * and analysis of quasi-elastic proton-deuteron scattering reaction, 
+ * where the neutron within the deuteron acts as a spectator (pd -> ppn_spectator). 
+ * This class provides calculations needed for such simulations.
+ * 
+ * @version 1.0
+ * @date 2024-02-17
+ * 
+ * @remark Licensed under the GNU General Public License version 3.0 (GPLv3).
+ */
+
+#include "physics_calculator.h"
+#include "constants.h"
 #include "TMath.h"
 
-Double_t m_d = DEUTERON_MASS;
-Double_t m_n = NEUTRON_MASS;
-Double_t m_p = PROTON_MASS;
+const Double_t m_d = Constants::DEUTERON_MASS;
+const Double_t m_n = Constants::NEUTRON_MASS;
+const Double_t m_p = Constants::PROTON_MASS;
 
 Double_t PhysicsCalculator::calculateEnergy(Double_t p, Double_t m) 
 {
