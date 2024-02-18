@@ -70,58 +70,27 @@ int main(int argc, char** argv) {
   
     const int num_iterations = 10;
     for (int iteration = 1; iteration <= num_iterations; ++iteration) {     
-        //eventGenerator.setGraph(graph);
-
-/*       // Format output file name
-        std::ostringstream file_name_stream;
-        file_name_stream << "${PLUTO_OUTPUT}/pd-ppn_spec-" << model_name << "-" << iteration << ".root";
-        std::string file_name = file_name_stream.str();
-
-        std::ostringstream file_name_stream2;
-        file_name_stream2 << "calculations-" << model_name << "-" << iteration << ".root";
-        std::string file_name2 = file_name_stream2.str();
-
-        EventGenerator eventGenerator(writer, 1000);
-
-        eventGenerator.setGraph(graph);
-
-        // Generate a text file name similar to the ROOT file name
-        std::ostringstream text_file_name_stream;
-        text_file_name_stream << "../proton_momentum_theta/proton_momentum_theta-" << model_name << "-" << iteration << ".txt";
-        std::string text_file_name = text_file_name_stream.str();
-
         
-        // Write results
-        eventGenerator.generateEvents();
 
-        //std::vector<std::pair<double, double> > collected_data = eventGenerator.getProtonData();
+       // Format the name of output files
+        std::ostringstream pluto_file_name_stream;
+        pluto_file_name_stream << "pd-ppn_spec-" << model_name << "-" << iteration << ".root";
+        std::string pluto_file_name = pluto_file_name_stream.str();
 
+        std::ostringstream data_file_name_stream;
+        data_file_name_stream << "../data/data_ppn_spec-" << model_name << "-" << iteration << ".root";
+        std::string data_file_name = data_file_name_stream.str();
 
-       // DataWriter dataWriter;
-
-        // Write the calculated data to a text file
-        //dataWriter.writeProtonData(collected_data, text_file_name);
+        std::ostringstream proton_file_name_stream;
+        proton_file_name_stream << "../data/proton_momentum_theta-" << model_name << "-" << iteration << ".txt";
+        std::string proton_file_name = proton_file_name_stream.str();      
+    
+        EventGenerator eventGenerator(graph, dataWriter, pluto_file_name, data_file_name, proton_file_name);
+        eventGenerator.generateEvents(1000);
     }
 
     // Cleanup
     delete graph;
-*/
 
-
-        std::ostringstream particlesFileNameStream;
-        particlesFileNameStream << "pd-ppn_spec-" << model_name << "-" << iteration << ".root";
-        std::string particlesFileName = particlesFileNameStream.str();
-
-        std::ostringstream calculationsFileNameStream;
-        calculationsFileNameStream << "calculations-" << model_name << "-" << iteration << ".root";
-        std::string calculationsFileName = calculationsFileNameStream.str();
-
-        std::ostringstream protonDataFileNameStream;
-        protonDataFileNameStream << "protonData-" << model_name << "-" << iteration << ".txt";
-        std::string protonDataFileName = protonDataFileNameStream.str();
-
-        EventGenerator eventGenerator(graph, dataWriter, particlesFileName, calculationsFileName, protonDataFileName);
-        eventGenerator.generateEvents(1000);
-    }
     return 0;
 }
