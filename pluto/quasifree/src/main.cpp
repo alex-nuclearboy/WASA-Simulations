@@ -104,6 +104,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    char* pluto_sys_env = getenv("PLUTOSYS");
+    if (!pluto_sys_env) {
+        std::cerr << "Error: PLUTOSYS environment variable is not set." 
+                  << std::endl;
+        return 1;
+    }
+
     // Initialize ROOT and PLUTO libraries
     const char* libraries[] = {
         "libMatrix.so", "libHist.so", "libPhysics.so", "libRIO.so", 
