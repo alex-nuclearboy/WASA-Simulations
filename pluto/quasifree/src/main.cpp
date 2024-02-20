@@ -68,8 +68,8 @@ public:
      * Constructs the file path for the file with calculated values.
      * @param model_name Name of the model used in the simulation.
      * @param iteration Iteration number of the simulation run.
-     * @return Absolute file path for the calculated data file.     */
-
+     * @return Absolute file path for the calculated data file.     
+     */
     static std::string getDataFilePath(
         const std::string& model_name, int iteration) 
     {
@@ -121,7 +121,7 @@ private:
  * simulation to run. It also sets the include path for PLUTO headers to ensure 
  * that the simulation can access necessary resources.
  * The function prints out all loaded libraries to provide feedback on the 
- * initialization process.
+ * initialisation process.
  * 
  * @return true if all libraries are loaded successfully, false otherwise.
  *  * 
@@ -149,12 +149,8 @@ bool initialiseLibraries() {
     }
 
     // Construct the path for libPluto.so using the PLUTOSYS environment variable.
-    const char* pluto_sys_path = getenv("PLUTOSYS");
-    if (!pluto_sys_path) {
-        std::cerr << "PLUTOSYS environment variable is not set." << std::endl;
-        return false;
-    }
-    std::string lib_pluto_path = std::string(pluto_sys_path) + "/lib/libPluto.so";
+    std::string lib_pluto_path = std::string(getenv("PLUTOSYS")) + 
+                                 "/lib/libPluto.so";
 
     // Attempt to load libPluto.so using the constructed path.
     if (gSystem->Load(lib_pluto_path.c_str()) == -1) {
@@ -163,7 +159,7 @@ bool initialiseLibraries() {
     }
 
     // Set the include path for PLUTO headers using the PLUTOSYS path.
-    std::string include_path = std::string("-I") + pluto_sys_path + "/src";
+    std::string include_path = std::string("-I") + getenv("PLUTOSYS") + "/src";
     gSystem->SetIncludePath(include_path.c_str());
     std::cout << "Include path set to: " << include_path << std::endl;
 
