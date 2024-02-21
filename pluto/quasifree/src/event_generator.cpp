@@ -241,6 +241,42 @@ void EventGenerator::generateEvents(int num_events)
     cleanup();
 }
 
+void EventGenerator::runSimulations(
+    TGraph* graph, const int num_iterations, const int num_events, 
+    const std::string& model_name) 
+{
+    DataWriter dataWriter;
+
+    for (int iteration = 0; iteration < num_iterations; ++iteration) {
+        std::cout << "Processing simulation run " << (iteration + 1) << "..." 
+                  << std::endl;
+
+        std::string pluto_file_path = 
+            DataWriter::getPlutoFilePath(model_name, iteration);
+        std::string data_file_path = 
+            DataWriter::getDataFilePath(model_name, iteration);
+        std::string proton_file_path = 
+            DataWriter::getProtonFilePath(model_name, iteration);
+        
+        // Initialise EventGenerator with the current model's graph and file names
+        EventGenerator eventGenerator(graph, dataWriter, pluto_file_path,
+                                      data_file_path, proton_file_path);
+        
+        // Generate and process events
+        eventGenerator.generateEvents(num_events);
+
+        std::cout << "Simulation run " << (iteration + 1) << " completed." 
+                  << std::endl;
+        std::cout << "PLUTO file: " << pluto_file_path << std::endl;
+        std::cout << "Calculated data file: " << data_file_path << std::endl;
+        std::cout << "Proton data file: " << proton_file_path 
+                  << std::endl << std::endl;
+
+    }
+    std::cout << "Simulation completed successfully." << std::endl;
+}
+
+
 void EventGenerator::cleanup() 
 {    
     // Clean up particlesTree_

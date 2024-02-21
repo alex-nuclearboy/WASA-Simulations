@@ -47,6 +47,7 @@ set(SOURCES
     src/main.cpp
     src/file_reader.cpp
     src/physics_calculator.cpp
+    src/library_manager.cpp
     src/event_generator.cpp
     src/data_writer.cpp
 )
