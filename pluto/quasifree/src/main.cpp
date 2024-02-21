@@ -26,7 +26,7 @@
  * @remark Licensed under the GNU General Public License version 3.0 (GPLv3).
  */
 
-#include "file_reader.h"
+#include "momentum_data_loader.h"
 #include "library_manager.h"
 #include "event_generator.h"
 #include "data_writer.h"
@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
     // Model selection and data loading
     std::string model_name = argv[1];
-    TGraph* graph = FileReader::loadMomentumDistribution(model_name);
+    TGraph* graph = MomentumDataLoader::loadMomentumDistribution(model_name);
     if (graph == NULL || graph->GetN() <= 0) {
         std::cerr << "Error: Failed to load momentum distribution data." 
                   << std::endl;

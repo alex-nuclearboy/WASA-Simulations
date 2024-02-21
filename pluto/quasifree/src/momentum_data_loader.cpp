@@ -1,39 +1,45 @@
 /**
- * @file file_reader.cpp
- * @brief Implementation of the FileReader class used to read nucleon momentum 
- *        distribution data from a file and construct a TGraph object.
+ * @file momentum_data_loader.cpp
+ * @author AK <alex.nuclearboy@gmail.com>
+ * @brief Implementation of MomentumDataLoader class methods.
  *
- * @details
- * Implements FileReader class methods to open a specified file, read nucleon
- * momentum and probability data, and construct a TGraph object representing
- * this data.
+ * Defines methods for opening a specified file, reading nucleon momentum and
+ * probability data, and constructing a TGraph object to represent this data.
+ * 
+ * @version 2.0
+ * @date 2024-02-21
+ * 
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
 
-#include "file_reader.h"
+#include "momentum_data_loader.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <sstream>
 #include <stdexcept>
 #include <map>
+#include "TROOT.h"
+#include "TGraph.h"
 
-FileReader::FileReader(const std::string& file_path) : file_path(file_path) {}
+MomentumDataLoader::MomentumDataLoader(const std::string& file_path) 
+    : file_path(file_path) {}
 
-TGraph* FileReader::readData() 
+TGraph* MomentumDataLoader::readData()
 {
     std::ifstream file(this->file_path.c_str());
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file: " + file_path);
     }
 
-    std::vector<double> momentum;
-    std::vector<double> probability;
+    std::vector<Double_t> momentum;
+    std::vector<Double_t> probability;
     std::string line;
     
     while (std::getline(file, line)) {
         std::istringstream iss(line);
-        double m, p;
-        if (!(iss >> m >> p)) { break; } // Handle error or malformed line
+        Double_t m, p;
+        if (!(iss >> m >> p)) { break; }    // Handle error or malformed line
 
         momentum.push_back(m);
         probability.push_back(p);
@@ -43,7 +49,7 @@ TGraph* FileReader::readData()
     return new TGraph(momentum.size(), &momentum[0], &probability[0]);
 }
 
-TGraph* FileReader::loadMomentumDistribution(const std::string& model_name) 
+TGraph* MomentumDataLoader::loadMomentumDistribution(const std::string& model_name) 
 {
     // Map model names to their corresponding momentum distribution files
     std::map<std::string, std::string> model_to_file_map;
@@ -61,7 +67,7 @@ TGraph* FileReader::loadMomentumDistribution(const std::string& model_name)
         return NULL;
     }
 
-    FileReader file_reader(model_to_file_map[model_name]);
+    MomentumDataLoader file_reader(model_to_file_map[model_name]);
 
     return file_reader.readData();
 }
