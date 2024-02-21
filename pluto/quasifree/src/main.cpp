@@ -32,7 +32,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <map>
+
 #include <cstdlib>
 #include <limits.h>
 #include <unistd.h>
@@ -99,7 +99,6 @@ private:
      * Retrieves the absolute path of the given relative path.
      * @param relative_path The relative path to be converted.
      * @return Absolute path if resolution is successful, an empty string otherwise.
-     * @throws Prints an error message if the path cannot be resolved.
      */
     static std::string getAbsolutePath(const std::string& relative_path) {
         char temp[PATH_MAX];
@@ -173,42 +172,8 @@ bool initialiseLibraries() {
     return true;
 }
 
-/**
- * @brief Loads the nucleon momentum distribution data for the specified model.
- * 
- * This function maps model names to their respective momentum distribution 
- * files and reads the data from the specified file. It supports two models: 
- * 'paris' and 'cdbonn', each associated with its own momentum distribution file.
- * 
- * @param model_name The name of the model for which the momentum distribution 
- *                   is to be loaded.
- * @return A pointer to a TGraph object containing the loaded momentum 
- *         distribution data, or NULL if an error occurs.
- * 
- * @note Ensure the momentum distribution files are correctly placed in the 
- *       "../momentum_distributions/" directory.
- */
-TGraph* loadMomentumDistribution(const std::string& model_name) {
-    // Map model names to their corresponding momentum distribution files
-    std::map<std::string, std::string> model_to_file_map;
-    model_to_file_map["paris"] = 
-        "../momentum_distributions/paris_momentum_distribution.txt";
-    model_to_file_map["cdbonn"] = 
-        "../momentum_distributions/cdbonn_momentum_distribution.txt";
-    
-    std::string model_file_path = model_to_file_map[model_name];
 
-    // Check if the model name is valid
-    if (model_file_path.empty()) {
-        std::cerr << "Error: No file associated with model " << model_name << ". "
-                  << "Available models are `paris` and `cdbonn`." << std::endl;
-        return NULL;
-    }
 
-    FileReader file_reader(model_to_file_map[model_name]);
-
-    return file_reader.read_data();
-}
 
 /**
  * @brief Manages the simulation runs for a given model and graph data.
@@ -294,7 +259,7 @@ int main(int argc, char** argv) {
 
     // Model selection and data loading
     std::string model_name = argv[1];
-    TGraph* graph = loadMomentumDistribution(model_name);
+    TGraph* graph = FileReader::loadMomentumDistribution(model_name);
     if (graph == NULL || graph->GetN() <= 0) {
         std::cerr << "Error: Failed to load momentum distribution data." 
                   << std::endl;
