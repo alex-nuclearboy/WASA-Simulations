@@ -226,13 +226,6 @@ void EventGenerator::generateEvents(int num_events)
             i++;
         }        
     }
-/*
-    TFile* file = tree_->GetCurrentFile(); // Get the file associated with the TTree
-    if (file) {
-        file->Write();
-        file->Close(); // This also deletes the TTree
-    }
-    */
 
     writer_.writeTreeToFile(particlesTree_, particlesFileName_);
     writer_.writeTreeToFile(calculationsTree_, calculationsFileName_);
