@@ -21,6 +21,7 @@
 #include <map>
 #include "TROOT.h"
 #include "TGraph.h"
+#include "Rtypes.h"
 
 MomentumDataLoader::MomentumDataLoader(const std::string& file_path) 
     : file_path(file_path) {}

@@ -18,8 +18,9 @@
 #include <string>
 #include <cstdlib>  // For getenv()
 #include "TSystem.h"
+#include "Rtypes.h"
 
-bool LibraryManager::initialiseLibraries() 
+Bool_t LibraryManager::initialiseLibraries() 
 {
     std::cout << "Initialising simulation environment..." << std::endl;
 
