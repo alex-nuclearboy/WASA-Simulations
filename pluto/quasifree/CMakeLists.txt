@@ -45,7 +45,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ROOT_CXX_FLAGS}")
 # Add your source files here
 set(SOURCES
     src/main.cpp
-    src/file_reader.cpp
+    src/momentum_data_loader.cpp
     src/physics_calculator.cpp
     src/library_manager.cpp
     src/event_generator.cpp
