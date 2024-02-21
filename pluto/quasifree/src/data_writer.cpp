@@ -3,6 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include <utility>
+#include <cstdlib>
+#include <limits.h>
+#include <unistd.h>
 #include "TFile.h"
 #include "TTree.h"
 
@@ -37,4 +40,43 @@ void DataWriter::writeProtonData(const std::vector<std::pair<double, double> >& 
     }
 
     out_file.close();
+}
+
+std::string DataWriter::getPlutoFilePath(
+    const std::string& model_name, int iteration) 
+{
+    std::ostringstream path;
+    path << getenv("PLUTO_OUTPUT") << "/pd-ppn_spec-" << model_name << "-" 
+         << (iteration + 1) << ".root";
+    return getAbsolutePath(path.str());
+}
+
+std::string DataWriter::getDataFilePath(
+    const std::string& model_name, int iteration)
+{
+    std::ostringstream path;
+    path << "../data/data_ppn_spec-" << model_name << "-" << (iteration + 1) 
+         << ".root";
+    return getAbsolutePath(path.str());
+}
+
+std::string DataWriter::getProtonFilePath(
+    const std::string& model_name, int iteration)
+{
+    std::ostringstream path;
+    path << "../data/proton_momentum_theta-" << model_name << "-" 
+         << (iteration + 1) << ".txt";
+    return getAbsolutePath(path.str());
+}
+
+std::string DataWriter::getAbsolutePath(const std::string& relative_path) {
+    char temp[PATH_MAX];
+    char* resolved_path = realpath(relative_path.c_str(), temp);
+    if (resolved_path) {
+        return std::string(resolved_path);
+    } else {
+        std::cerr << "Error resolving absolute path for: " << relative_path 
+                  << std::endl;
+        return "";
+    }
 }
