@@ -27,121 +27,18 @@
  */
 
 #include "file_reader.h"
+#include "library_manager.h"
 #include "event_generator.h"
 #include "data_writer.h"
 #include <iostream>
 #include <string>
 #include <sstream>
 #include "TGraph.h"
-#include "TSystem.h"
+
 
 // Constants for the simulation
-const int num_events = 1000;
-const int num_iterations = 2;
-
-/**
- * @brief Initialises and loads required libraries for the simulation.
- * 
- * This function attempts to load ROOT and PLUTO libraries needed for the 
- * simulation to run. It also sets the include path for PLUTO headers to ensure 
- * that the simulation can access necessary resources.
- * The function prints out all loaded libraries to provide feedback on the 
- * initialisation process.
- * 
- * @return true if all libraries are loaded successfully, false otherwise.
- *  * 
- * @note The function assumes that the PLUTOSYS environment variable is 
- *       correctly set to the path of the PLUTO installation.
- */
-bool initialiseLibraries() {
-    std::cout << "Initialising simulation environment..." << std::endl;
-
-    // Attempt to load standard ROOT libraries.
-    const char* common_libraries[] = {
-        "libMatrix.so", "libHist.so", "libPhysics.so", "libRIO.so",
-        "libTree.so", "libTreeViewer.so"
-    };
-
-    for (size_t i = 0; 
-        i < sizeof(common_libraries) / sizeof(common_libraries[0]); 
-        ++i) 
-    {
-        if (gSystem->Load(common_libraries[i]) == -1) {
-            std::cerr << "Unable to load library: " << common_libraries[i] 
-                      << std::endl;
-            return false;
-        }
-    }
-
-    // Construct the path for libPluto.so using the PLUTOSYS environment variable.
-    std::string lib_pluto_path = std::string(getenv("PLUTOSYS")) + 
-                                 "/lib/libPluto.so";
-
-    // Attempt to load libPluto.so using the constructed path.
-    if (gSystem->Load(lib_pluto_path.c_str()) == -1) {
-        std::cerr << "Unable to load the PLUTO library" << std::endl;
-        return false;
-    }
-
-    // Set the include path for PLUTO headers using the PLUTOSYS path.
-    std::string include_path = std::string("-I") + getenv("PLUTOSYS") + "/src";
-    gSystem->SetIncludePath(include_path.c_str());
-    std::cout << "Include path set to: " << include_path << std::endl;
-
-    std::cout << "All libraries loaded successfully." << std::endl;
-
-    // Print the list of loaded libraries for confirmation.
-    TString loaded_libraries = gSystem->GetLibraries();
-    std::cout << "Loaded libraries:" << std::endl << loaded_libraries.Data() 
-              << std::endl << std::endl;
-
-    return true;
-}
-
-
-/**
- * @brief Manages the simulation runs for a given model and graph data.
- * 
- * This function is responsible for managing the execution of multiple 
- * simulation runs, generating event data, and writing the output to specified 
- * files for each simulation iteration. It uses the `EventGenerator`
- * class to process the simulations and the `DataWriter` class to handle the output.
- * 
- * @param graph A pointer to a TGraph object containing the nucleon momentum 
- *              distribution data for the model.
- * @param model_name The name of the model being simulated.
- */
-void runSimulations(TGraph* graph, const std::string& model_name) {
-    DataWriter dataWriter;
-
-    for (int iteration = 0; iteration < num_iterations; ++iteration) {
-        std::cout << "Processing simulation run " << (iteration + 1) << "..." 
-                  << std::endl;
-
-        std::string pluto_file_path = 
-            DataWriter::getPlutoFilePath(model_name, iteration);
-        std::string data_file_path = 
-            DataWriter::getDataFilePath(model_name, iteration);
-        std::string proton_file_path = 
-            DataWriter::getProtonFilePath(model_name, iteration);
-        
-        // Initialise EventGenerator with the current model's graph and file names
-        EventGenerator eventGenerator(graph, dataWriter, pluto_file_path,
-                                      data_file_path, proton_file_path);
-        
-        // Generate and process events
-        eventGenerator.generateEvents(num_events);
-
-        std::cout << "Simulation run " << (iteration + 1) << " completed." 
-                  << std::endl;
-        std::cout << "PLUTO file: " << pluto_file_path << std::endl;
-        std::cout << "Calculated data file: " << data_file_path << std::endl;
-        std::cout << "Proton data file: " << proton_file_path 
-                  << std::endl << std::endl;
-
-    }
-    std::cout << "Simulation completed successfully." << std::endl;
-}
+const int NUM_EVENTS = 1000;
+const int NUM_ITERATIONS = 2;
 
 /**
  * @brief Main function to initialise the simulation for a specific model.
@@ -179,7 +76,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (!initialiseLibraries()) return 1;
+    if (!LibraryManager::initialiseLibraries()) return 1;
 
     // Model selection and data loading
     std::string model_name = argv[1];
@@ -194,7 +91,7 @@ int main(int argc, char** argv) {
     std::cout << "Initializing simulation for model: " << model_name 
               << std::endl << std::endl;
 
-    runSimulations(graph, model_name);
+    EventGenerator::runSimulations(graph, NUM_ITERATIONS, NUM_EVENTS, model_name);
 
     // Clean up
     delete graph;

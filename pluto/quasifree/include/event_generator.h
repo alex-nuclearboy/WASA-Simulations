@@ -25,6 +25,22 @@ public:
     void setGraph(TGraph* graph);
     void generateEvents(int num_events);
 
+    /**
+    * @brief Manages the simulation runs for a given model and graph data.
+    * 
+    * This function is responsible for managing the execution of multiple 
+    * simulation runs, generating event data, and writing the output to specified 
+    * files for each simulation iteration. It uses the `EventGenerator`
+     * class to process the simulations and the `DataWriter` class to handle the output.
+     * 
+    * @param graph A pointer to a TGraph object containing the nucleon momentum 
+    *              distribution data for the model.
+     * @param model_name The name of the model being simulated.
+     */
+    static void runSimulations(
+        TGraph* graph, const int num_iterations, const int num_events, 
+        const std::string& model_name);
+
     std::vector<std::pair<Double_t, Double_t> > getProtonData() const { return proton_data; }
 
     TTree* getParticlesTree() const { return tree_; }
