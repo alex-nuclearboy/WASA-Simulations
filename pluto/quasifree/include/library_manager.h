@@ -16,6 +16,8 @@
 #ifndef LIBRARY_MANAGER_H
 #define LIBRARY_MANAGER_H
 
+#include "Rtypes.h"
+
 /**
  * @class LibraryManager
  * @brief Manages loading of ROOT and PLUTO libraries for the simulation.
@@ -35,7 +37,7 @@ public:
      * @note Assumes the PLUTOSYS environment variable is correctly set 
      *       to the PLUTO installation path.
      */
-    static bool initialiseLibraries();
+    static Bool_t initialiseLibraries();
 };
 
 #endif // LIBRARY_MANAGER_H
