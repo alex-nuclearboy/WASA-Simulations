@@ -32,86 +32,12 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-
-#include <cstdlib>
-#include <limits.h>
-#include <unistd.h>
 #include "TGraph.h"
 #include "TSystem.h"
 
 // Constants for the simulation
 const int num_events = 1000;
 const int num_iterations = 2;
-
-/**
- * @class FilePathManager
- * @brief Manages file paths for simulation output files.
- */
-class FilePathManager {
-public:
-    /**
-     * Constructs the file path for the PLUTO output file.
-     * @param model_name Name of the model used in the simulation.
-     * @param iteration Iteration number of the simulation run.
-     * @return Absolute file path for the PLUTO output file.
-     */    
-    static std::string getPlutoFilePath(
-        const std::string& model_name, int iteration) 
-    {
-        std::ostringstream path;
-        path << getenv("PLUTO_OUTPUT") << "/pd-ppn_spec-" << model_name << "-" 
-             << (iteration + 1) << ".root";
-        return getAbsolutePath(path.str());
-    }
-
-    /**
-     * Constructs the file path for the file with calculated values.
-     * @param model_name Name of the model used in the simulation.
-     * @param iteration Iteration number of the simulation run.
-     * @return Absolute file path for the calculated data file.     
-     */
-    static std::string getDataFilePath(
-        const std::string& model_name, int iteration) 
-    {
-        std::ostringstream path;
-        path << "../data/data_ppn_spec-" << model_name << "-" << (iteration + 1) 
-             << ".root";
-        return getAbsolutePath(path.str());
-    }
-
-    /**
-     * Constructs the file path for the proton momentum and scattering angle file.
-     * @param model_name Name of the model used in the simulation.
-     * @param iteration Iteration number of the simulation run.
-     * @return Absolute file path for the proton data file.
-     */
-    static std::string getProtonFilePath(
-        const std::string& model_name, int iteration) 
-    {
-        std::ostringstream path;
-        path << "../data/proton_momentum_theta-" << model_name << "-" 
-             << (iteration + 1) << ".txt";
-        return getAbsolutePath(path.str());
-    }
-
-private:
-    /**
-     * Retrieves the absolute path of the given relative path.
-     * @param relative_path The relative path to be converted.
-     * @return Absolute path if resolution is successful, an empty string otherwise.
-     */
-    static std::string getAbsolutePath(const std::string& relative_path) {
-        char temp[PATH_MAX];
-        char* resolved_path = realpath(relative_path.c_str(), temp);
-        if (resolved_path) {
-            return std::string(resolved_path);
-        } else {
-            std::cerr << "Error resolving absolute path for: " << relative_path 
-                      << std::endl;
-            return "";
-        }
-    }
-};
 
 /**
  * @brief Initialises and loads required libraries for the simulation.
@@ -173,8 +99,6 @@ bool initialiseLibraries() {
 }
 
 
-
-
 /**
  * @brief Manages the simulation runs for a given model and graph data.
  * 
@@ -195,11 +119,11 @@ void runSimulations(TGraph* graph, const std::string& model_name) {
                   << std::endl;
 
         std::string pluto_file_path = 
-            FilePathManager::getPlutoFilePath(model_name, iteration);
+            DataWriter::getPlutoFilePath(model_name, iteration);
         std::string data_file_path = 
-            FilePathManager::getDataFilePath(model_name, iteration);
+            DataWriter::getDataFilePath(model_name, iteration);
         std::string proton_file_path = 
-            FilePathManager::getProtonFilePath(model_name, iteration);
+            DataWriter::getProtonFilePath(model_name, iteration);
         
         // Initialise EventGenerator with the current model's graph and file names
         EventGenerator eventGenerator(graph, dataWriter, pluto_file_path,
