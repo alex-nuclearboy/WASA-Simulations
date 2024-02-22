@@ -18,20 +18,17 @@ const double deuteron_mass = Constants::DEUTERON_MASS;
 
 RandomGenerator rand_gen;
 
-EventGenerator::EventGenerator(TGraph* graph, DataWriter& writer, const std::string& particlesFile, const std::string& calculationsFile, const std::string& protonDataFile)
-: graph_(graph), writer_(writer), particlesFileName_(particlesFile), calculationsFileName_(calculationsFile), protonDataFileName_(protonDataFile) {
-   //setupTree();
-}
+EventGenerator::EventGenerator(
+    TGraph* graph, DataWriter& writer, 
+    const std::string& pluto_data_file, 
+    const std::string& analysis_data_file, 
+    const std::string& proton_data_file)
+    : graph_(graph), writer_(writer), 
+    pluto_data_file_(pluto_data_file), 
+    analysis_data_file_(analysis_data_file), 
+    proton_data_file_(proton_data_file) {}
 
-EventGenerator::~EventGenerator() 
-{
-   // cleanup();
-}
-
-void EventGenerator::setGraph(TGraph* graph) 
-{
-    this->graph_ = graph;
-}
+EventGenerator::~EventGenerator() {}
 
 void EventGenerator::setupTree() 
 { 
@@ -41,39 +38,41 @@ void EventGenerator::setupTree()
 
     particles_ = new TClonesArray("PParticle", Npart_);
 
-    // Setup for particlesTree_
-    particlesTree_ = new TTree("data", "Particles Tree");
+    // Setup for tree with particles
+    particles_tree_ = new TTree("data", "Particles Tree");
+    particles_tree_->Branch("Npart", &Npart_, "Npart/I");
+    particles_tree_->Branch("Impact", &Impact_, "Impact/F");
+    particles_tree_->Branch("Phi", &Phi_, "Phi/F");
+    particles_tree_->Branch("Particles", &particles_);
 
-    // Define branches for `particlesTree_`
-    particlesTree_->Branch("Npart", &Npart_, "Npart/I");
-    particlesTree_->Branch("Impact", &Impact_, "Impact/F");
-    particlesTree_->Branch("Phi", &Phi_, "Phi/F");
-    particlesTree_->Branch("Particles", &particles_);
-
-    // Setup for calculationsTree_
-    calculationsTree_ = new TTree("values", "Simulation Data");
-    // Define branches for `calculationsTree_`
-    calculationsTree_->Branch("Momentum", &momentum_, "Momentum/D");
-
-    
+    // Setup for tree with calculated values
+    data_tree_ = new TTree("values", "Simulation Data");
+    data_tree_->Branch("Momentum", &momentum_, "Momentum/D");
 }
 
-void EventGenerator::setParticles(TClonesArray* particlesArray, const std::vector<ParticleData>& particlesData) 
+void EventGenerator::setParticles(
+    TClonesArray* particles_array, 
+    const std::vector<ParticleData>& particles_data) 
 {
-    particlesArray->Clear();
+    particles_array->Clear();
 
-    for (size_t i = 0; i < particlesData.size(); ++i) {
-        const ParticleData& pd = particlesData[i];
-        new ((*particlesArray)[i]) PParticle(pd.name.c_str(), pd.vector.Px(), pd.vector.Py(), pd.vector.Pz(), pd.vector.M());
+    for (size_t i = 0; i < particles_data.size(); ++i) {
+        const ParticleData& pd = particles_data[i];
+        new ((*particles_array)[i]) PParticle(
+            pd.name.c_str(),
+            pd.vector.Px(),
+            pd.vector.Py(),
+            pd.vector.Pz(),
+            pd.vector.M()
+        );
     }
 }
 
 void EventGenerator::generateEvents(int num_events)
-{ 
+{
     setupTree();
-    
 
-    if (!particlesTree_ || !calculationsTree_ || !particles_) {
+    if (!particles_tree_ || !data_tree_ || !particles_) {
         std::cerr << "Tree or Particles array not initialized." << std::endl;
         return;
     }
@@ -134,7 +133,7 @@ void EventGenerator::generateEvents(int num_events)
 
             momentum_ = beam_momentum_lab;
 
-            calculationsTree_->Fill();
+            data_tree_->Fill();
 
 
             /* Neutron spectator */            
@@ -221,22 +220,22 @@ void EventGenerator::generateEvents(int num_events)
 
             setParticles(particles_, event_particles);
 
-            particlesTree_->Fill();
+            particles_tree_->Fill();
 
             i++;
         }        
     }
 
-    writer_.writeTreeToFile(particlesTree_, particlesFileName_);
-    writer_.writeTreeToFile(calculationsTree_, calculationsFileName_);
-    writer_.writeProtonData(proton_data, protonDataFileName_);
+    writer_.writeTreeToFile(particles_tree_, pluto_data_file_);
+    writer_.writeTreeToFile(data_tree_, analysis_data_file_);
+    writer_.writeProtonData(proton_data, proton_data_file_);
 
     cleanup();
 }
 
 void EventGenerator::runSimulations(
-    TGraph* graph, const int num_iterations, const int num_events, 
-    const std::string& model_name) 
+    const std::string& model_name, TGraph* graph, 
+        Int_t num_events, Int_t num_iterations)
 {
     DataWriter dataWriter;
 
@@ -272,16 +271,16 @@ void EventGenerator::runSimulations(
 
 void EventGenerator::cleanup() 
 {    
-    // Clean up particlesTree_
-    if (particlesTree_ != NULL) {
-        delete particlesTree_; // This also frees memory allocated for branches
-        particlesTree_ = NULL;
+    // Clean up particles_tree_
+    if (particles_tree_ != NULL) {
+        delete particles_tree_; // This also frees memory allocated for branches
+        particles_tree_ = NULL;
     }
 
-    // Clean up calculationsTree_
-    if (calculationsTree_ != NULL) {
-        delete calculationsTree_;
-        calculationsTree_ = NULL;
+    // Clean up data_tree_
+    if (data_tree_ != NULL) {
+        delete data_tree_;
+        data_tree_ = NULL;
     }
 
     // If using dynamic memory for particles_, ensure it is properly deleted

@@ -87,11 +87,11 @@ int main(int argc, char** argv) {
         delete graph;
         return 1;
     }
-        
+
     std::cout << "Initializing simulation for model: " << model_name 
               << std::endl << std::endl;
 
-    EventGenerator::runSimulations(graph, NUM_ITERATIONS, NUM_EVENTS, model_name);
+    EventGenerator::runSimulations(model_name, graph, NUM_EVENTS, NUM_ITERATIONS);
 
     // Clean up
     delete graph;
