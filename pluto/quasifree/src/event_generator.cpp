@@ -1,3 +1,14 @@
+/**
+ * @file event_generator.cpp
+ * @author AK <alex.nuclearboy@gmail.com>
+ * @brief Implementation of the EventGenerator class for quasifree proton-deuteron 
+ *        scattering reaction simulations.
+ * 
+ * @version 2.0
+ * @date 2024-02-22
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
+ */
+
 #include "event_generator.h"
 #include "random_generator.h"
 #include "physics_calculator.h"
@@ -31,21 +42,20 @@ EventGenerator::EventGenerator(
 EventGenerator::~EventGenerator() {}
 
 void EventGenerator::setupTree() 
-{ 
+{
+    // Set up a tree structure for storing data on outgoing particles
     Npart_ = 3;
     Impact_ = 0;
     Phi_ = 0;
-
     particles_ = new TClonesArray("PParticle", Npart_);
 
-    // Setup for tree with particles
     particles_tree_ = new TTree("data", "Particles Tree");
     particles_tree_->Branch("Npart", &Npart_, "Npart/I");
     particles_tree_->Branch("Impact", &Impact_, "Impact/F");
     particles_tree_->Branch("Phi", &Phi_, "Phi/F");
     particles_tree_->Branch("Particles", &particles_);
 
-    // Setup for tree with calculated values
+    // Set up a tree structure with calculated values
     data_tree_ = new TTree("values", "Simulation Data");
     data_tree_->Branch("Momentum", &momentum_, "Momentum/D");
 }
@@ -56,6 +66,7 @@ void EventGenerator::setParticles(
 {
     particles_array->Clear();
 
+    // Fill particles array with ParticleData instances
     for (size_t i = 0; i < particles_data.size(); ++i) {
         const ParticleData& pd = particles_data[i];
         new ((*particles_array)[i]) PParticle(
@@ -83,51 +94,69 @@ void EventGenerator::generateEvents(int num_events)
         std::vector<ParticleData> event_particles;
 
         /* LAB FRAME */
-        Double_t beam_momentum_lab = rand_gen.generate(Constants::BEAM_MOMENTUM_MIN, Constants::BEAM_MOMENTUM_MAX);
-        Double_t beam_energy_lab = PhysicsCalculator::calculateEnergy(beam_momentum_lab, proton_mass);
-
-        
+        Double_t beam_momentum_lab = rand_gen.generate(
+            Constants::BEAM_MOMENTUM_MIN, Constants::BEAM_MOMENTUM_MAX);
+        Double_t beam_energy_lab = PhysicsCalculator::calculateEnergy(
+            beam_momentum_lab, proton_mass);
 
         TVector3 beam_vector;
         beam_vector.SetMagThetaPhi(beam_momentum_lab, 0., 0.);
-        
-        TLorentzVector beam_4vector = PhysicsCalculator::createFourVector(proton_mass, beam_momentum_lab, 0, 0);
-        TLorentzVector target_4vector = PhysicsCalculator::createFourVector(deuteron_mass, 0, 0, 0);
+
+        TLorentzVector beam_4vector = PhysicsCalculator::createFourVector(
+            proton_mass, beam_momentum_lab, 0, 0);
+        TLorentzVector target_4vector = PhysicsCalculator::createFourVector(
+            deuteron_mass, 0, 0, 0);
 
         TLorentzVector total_4vector = beam_4vector + target_4vector;
 
-        TLorentzVector beam_proton_4vector = PhysicsCalculator::createFourVector(proton_mass, beam_momentum_lab, 0, 0);
+        TLorentzVector beam_proton_4vector = PhysicsCalculator::createFourVector(
+            proton_mass, beam_momentum_lab, 0, 0);
 
-        Double_t inv_mass = PhysicsCalculator::calculateInvariantMass(proton_mass, deuteron_mass, beam_energy_lab); // Invariant mass of the colliding particles
+        Double_t inv_mass = PhysicsCalculator::calculateInvariantMass(  ///< Invariant mass of the colliding particles
+            proton_mass, deuteron_mass, beam_energy_lab);
 
         /* CM FRAME */
-        Double_t beta_cm = PhysicsCalculator::calculateBetaCM(beam_momentum_lab, proton_mass, deuteron_mass);
+        Double_t beta_cm = PhysicsCalculator::calculateBetaCM(
+            beam_momentum_lab, proton_mass, deuteron_mass);
         Double_t gamma_cm = PhysicsCalculator::calculateGammaCM(beta_cm);
 
-        Double_t beam_momentum_cm = beam_momentum_lab + beta_cm * gamma_cm * ((gamma_cm * beta_cm * beam_momentum_lab / (gamma_cm + 1)) - beam_energy_lab);
-        Double_t beam_energy_cm = gamma_cm * (beam_energy_lab - beta_cm * beam_momentum_lab);
+        Double_t beam_momentum_cm = beam_momentum_lab + beta_cm * gamma_cm *
+                                    ((gamma_cm * beta_cm * beam_momentum_lab / 
+                                    (gamma_cm + 1)) - beam_energy_lab);
+        Double_t beam_energy_cm = gamma_cm * (beam_energy_lab - beta_cm * 
+                                  beam_momentum_lab);
 
         /* Deuteron CM frame */
-        Double_t target_nucleon_cos_theta_cm = rand_gen.generate(-1, 1);        // Random cos(theta) for nucleon inside target
-        Double_t target_nucleon_theta_cm = TMath::ACos(target_nucleon_cos_theta_cm);   // [rad] - polar angle of nucleon inside target
-        Double_t target_nucleon_phi_cm = rand_gen.generate(-TMath::Pi(), TMath::Pi()); // [rad] - random azimuthal angle for nucleon inside target
+        Double_t target_nucleon_cos_theta_cm = rand_gen.generate(-1, 1);    ///< Random cos(theta) for nucleon inside target
+        Double_t target_nucleon_theta_cm = TMath::ACos(
+            target_nucleon_cos_theta_cm);   ///< [rad] - polar angle of nucleon inside target
+        Double_t target_nucleon_phi_cm = rand_gen.generate(
+            -TMath::Pi(), TMath::Pi()); ///< [rad] - random azimuthal angle for nucleon inside target
 
         Double_t target_nucleon_momentum_cm = rand_gen.generate(0, 0.4);
         
-        Double_t target_nucleon_px_cm = target_nucleon_momentum_cm * sin(target_nucleon_theta_cm) * cos(target_nucleon_phi_cm);
-        Double_t target_nucleon_py_cm = target_nucleon_momentum_cm * sin(target_nucleon_theta_cm) * sin(target_nucleon_phi_cm);
-        Double_t target_nucleon_pz_cm = target_nucleon_momentum_cm * cos(target_nucleon_theta_cm);
+        Double_t target_nucleon_px_cm = target_nucleon_momentum_cm * 
+                                        sin(target_nucleon_theta_cm) * 
+                                        cos(target_nucleon_phi_cm);
+        Double_t target_nucleon_py_cm = target_nucleon_momentum_cm * 
+                                        sin(target_nucleon_theta_cm) * 
+                                        sin(target_nucleon_phi_cm);
+        Double_t target_nucleon_pz_cm = target_nucleon_momentum_cm * 
+                                        cos(target_nucleon_theta_cm);
 
         if (!graph_) {
             std::cerr << "Graph not set." << std::endl;
             return;
         }
 
-        Double_t target_nucleon_mom_distr_max = TMath::MaxElement(graph_->GetN(), graph_->GetY());
+        Double_t target_nucleon_mom_distr_max = TMath::MaxElement(
+            graph_->GetN(), graph_->GetY());
 
-        Double_t target_nucleon_mom_random = rand_gen.generate(0, 1) * target_nucleon_mom_distr_max;
+        Double_t target_nucleon_mom_random = rand_gen.generate(0, 1) * 
+                                             target_nucleon_mom_distr_max;
 
-        Double_t target_nucleon_mom_distr = graph_->Eval(target_nucleon_momentum_cm);
+        Double_t target_nucleon_mom_distr = graph_->Eval(
+            target_nucleon_momentum_cm);
 
         if (target_nucleon_mom_distr > target_nucleon_mom_random) {
 
@@ -135,75 +164,127 @@ void EventGenerator::generateEvents(int num_events)
 
             data_tree_->Fill();
 
-
-            /* Neutron spectator */            
+            /* Neutron spectator */
             Double_t target_neutron_px_cm = target_nucleon_px_cm;
             Double_t target_neutron_py_cm = target_nucleon_py_cm;
             Double_t target_neutron_pz_cm = target_nucleon_pz_cm;
             Double_t target_neutron_theta_cm = target_nucleon_theta_cm;
             Double_t target_neutron_phi_cm = target_nucleon_phi_cm;
 
-            Double_t target_neutron_momentum_cm = PhysicsCalculator::calculateMomentum(target_neutron_px_cm, target_neutron_py_cm, target_neutron_pz_cm);
+            Double_t target_neutron_momentum_cm = 
+                PhysicsCalculator::calculateMomentum(
+                    target_neutron_px_cm, 
+                    target_neutron_py_cm, 
+                    target_neutron_pz_cm);
 
-            TLorentzVector target_neutron_4vector = PhysicsCalculator::createFourVector(neutron_mass, target_neutron_momentum_cm, target_neutron_theta_cm, target_neutron_phi_cm);
+            TLorentzVector target_neutron_4vector = 
+                PhysicsCalculator::createFourVector(
+                    neutron_mass, 
+                    target_neutron_momentum_cm, 
+                    target_neutron_theta_cm, 
+                    target_neutron_phi_cm);
 
             /* Target proton */
             Double_t target_proton_px_cm = -target_nucleon_px_cm;
             Double_t target_proton_py_cm = -target_nucleon_py_cm;
             Double_t target_proton_pz_cm = -target_nucleon_pz_cm;
-            Double_t target_proton_theta_cm = TMath::Pi() - target_nucleon_theta_cm;
+            Double_t target_proton_theta_cm = TMath::Pi() - 
+                                              target_nucleon_theta_cm;
             Double_t target_proton_phi_cm = TMath::Pi() + target_nucleon_phi_cm;
 
-            Double_t target_proton_momentum_cm = PhysicsCalculator::calculateMomentum(target_proton_px_cm, target_proton_py_cm, target_proton_pz_cm);
+            Double_t target_proton_momentum_cm = 
+                PhysicsCalculator::calculateMomentum(
+                    target_proton_px_cm, 
+                    target_proton_py_cm, 
+                    target_proton_pz_cm);
 
-            Double_t effective_proton_mass = PhysicsCalculator::calculateEffectiveProtonMass(target_proton_momentum_cm);
+            Double_t effective_proton_mass = 
+                PhysicsCalculator::calculateEffectiveProtonMass(
+                    target_proton_momentum_cm);
 
-            Double_t target_proton_energy_cm = PhysicsCalculator::calculateEnergy(target_proton_momentum_cm, effective_proton_mass);
+            Double_t target_proton_energy_cm = 
+                PhysicsCalculator::calculateEnergy(
+                    target_proton_momentum_cm, effective_proton_mass);
 
-            TLorentzVector target_proton_4vector = PhysicsCalculator::createFourVector(effective_proton_mass, target_proton_momentum_cm, target_proton_theta_cm, target_proton_phi_cm);
+            TLorentzVector target_proton_4vector = 
+                PhysicsCalculator::createFourVector(
+                    effective_proton_mass, target_proton_momentum_cm, 
+                    target_proton_theta_cm, target_proton_phi_cm);
 
             TVector3 target_proton_vector_cm;
-            target_proton_vector_cm.SetMagThetaPhi(target_proton_momentum_cm, target_proton_theta_cm, target_proton_phi_cm);
+            target_proton_vector_cm.SetMagThetaPhi(
+                target_proton_momentum_cm, 
+                target_proton_theta_cm, 
+                target_proton_phi_cm);
 
             /* Proton-proton LAB frame */
-            
-            TLorentzVector proton_proton_4vector = beam_proton_4vector + target_proton_4vector;
-            
-            Double_t proton_proton_angle = beam_vector.Angle(target_proton_vector_cm);  // [rad] - angle between the momenta of protons
-            Double_t effective_proton_momentum = PhysicsCalculator::calculateEffectiveProtonMomentum(beam_energy_lab, target_proton_energy_cm, beam_momentum_lab, target_proton_momentum_cm, proton_proton_angle, effective_proton_mass);
-            
-            TLorentzVector beam_proton_4vector_lab = PhysicsCalculator::createFourVector(proton_mass, effective_proton_momentum, 0, 0);
+            TLorentzVector proton_proton_4vector = beam_proton_4vector + 
+                                                   target_proton_4vector;
+
+            Double_t proton_proton_angle = 
+                beam_vector.Angle(target_proton_vector_cm);  ///< [rad] - angle between the momenta of protons
+            Double_t effective_proton_momentum = 
+                PhysicsCalculator::calculateEffectiveProtonMomentum(
+                    beam_energy_lab, target_proton_energy_cm, 
+                    beam_momentum_lab, target_proton_momentum_cm, 
+                    proton_proton_angle, effective_proton_mass);
+
+            TLorentzVector beam_proton_4vector_lab = 
+                PhysicsCalculator::createFourVector(
+                    proton_mass, effective_proton_momentum, 0, 0);
 
             /* Proton-proton CM frame */
-            TVector3 b = proton_proton_4vector.BoostVector();    // Transform to proton-proton CM frame (using 4-vectors calculated in proton-deuteron LAB frame)
+
+            // Transform to proton-proton CM frame 
+            // (using 4-vectors calculated in proton-deuteron LAB frame)
+            TVector3 b = proton_proton_4vector.BoostVector();
 
             beam_proton_4vector.Boost(-b);
 
             Double_t beam_proton_px_pp = beam_proton_4vector.Px();
             Double_t beam_proton_py_pp = beam_proton_4vector.Py();
             Double_t beam_proton_pz_pp = beam_proton_4vector.Pz();
-            Double_t beam_proton_momentum_pp = PhysicsCalculator::calculateMomentum(beam_proton_px_pp, beam_proton_py_pp, beam_proton_pz_pp);
+            Double_t beam_proton_momentum_pp = 
+                PhysicsCalculator::calculateMomentum(
+                    beam_proton_px_pp, 
+                    beam_proton_py_pp, 
+                    beam_proton_pz_pp);
 
             target_proton_4vector.Boost(-b);
 
             Double_t target_proton_px_pp = target_proton_4vector.Px();
             Double_t target_proton_py_pp = target_proton_4vector.Py();
             Double_t target_proton_pz_pp = target_proton_4vector.Pz();
-            Double_t target_proton_momentum_pp = PhysicsCalculator::calculateMomentum(target_proton_px_pp, target_proton_py_pp, target_proton_pz_pp);
+            Double_t target_proton_momentum_pp = 
+                PhysicsCalculator::calculateMomentum(
+                    target_proton_px_pp, 
+                    target_proton_py_pp, 
+                    target_proton_pz_pp);
 
             /* Scattering between two protons in the proton-proton CM frame */
             Double_t beam_proton_cos_theta_scat_cm = rand_gen.generate(-1, 1);
-            Double_t beam_proton_theta_scat_cm = TMath::ACos(beam_proton_cos_theta_scat_cm);    // [rad]
-            Double_t beam_proton_phi_scat_cm = rand_gen.generate(-TMath::Pi(), TMath::Pi());    // [rad]
+            Double_t beam_proton_theta_scat_cm = 
+                TMath::ACos(beam_proton_cos_theta_scat_cm);
+            Double_t beam_proton_phi_scat_cm = 
+                rand_gen.generate(-TMath::Pi(), TMath::Pi());
 
-            TLorentzVector beam_proton_scat_4vector = PhysicsCalculator::createFourVector(proton_mass, beam_proton_momentum_pp, beam_proton_theta_scat_cm, beam_proton_phi_scat_cm);
+            TLorentzVector beam_proton_scat_4vector = 
+                PhysicsCalculator::createFourVector(
+                    proton_mass, beam_proton_momentum_pp, 
+                    beam_proton_theta_scat_cm, beam_proton_phi_scat_cm);
 
-            Double_t target_proton_theta_scat_cm = TMath::Pi() - beam_proton_theta_scat_cm;
-            Double_t target_proton_phi_scat_cm = TMath::Pi() + beam_proton_phi_scat_cm;
+            Double_t target_proton_theta_scat_cm = TMath::Pi() - 
+                                                   beam_proton_theta_scat_cm;
+            Double_t target_proton_phi_scat_cm = TMath::Pi() + 
+                                                 beam_proton_phi_scat_cm;
 
-            TLorentzVector target_proton_scat_4vector = PhysicsCalculator::createFourVector(effective_proton_mass, target_proton_momentum_pp, target_proton_theta_scat_cm, target_proton_phi_scat_cm);
+            TLorentzVector target_proton_scat_4vector = 
+                PhysicsCalculator::createFourVector(
+                    effective_proton_mass, target_proton_momentum_pp, 
+                    target_proton_theta_scat_cm, target_proton_phi_scat_cm);
 
-            proton_data.push_back(std::make_pair(effective_proton_momentum, beam_proton_theta_scat_cm));
+            proton_data.push_back(std::make_pair(
+                effective_proton_momentum, beam_proton_theta_scat_cm));
 
             /* Proton-deuteron LAB frame */
             TVector3 b_pd;
@@ -212,9 +293,12 @@ void EventGenerator::generateEvents(int num_events)
             beam_proton_scat_4vector.Boost(b_pd);
             target_proton_scat_4vector.Boost(b_pd);
 
-            event_particles.push_back(ParticleData("n", target_neutron_4vector));
-            event_particles.push_back(ParticleData("p", beam_proton_scat_4vector));
-            event_particles.push_back(ParticleData("p", target_proton_scat_4vector));
+            event_particles.push_back(ParticleData(
+                "n", target_neutron_4vector));
+            event_particles.push_back(ParticleData(
+                "p", beam_proton_scat_4vector));
+            event_particles.push_back(ParticleData(
+                "p", target_proton_scat_4vector));
 
             particles_->Clear();
 
@@ -223,7 +307,7 @@ void EventGenerator::generateEvents(int num_events)
             particles_tree_->Fill();
 
             i++;
-        }        
+        }
     }
 
     writer_.writeTreeToFile(particles_tree_, pluto_data_file_);
@@ -268,25 +352,20 @@ void EventGenerator::runSimulations(
     std::cout << "Simulation completed successfully." << std::endl;
 }
 
-
 void EventGenerator::cleanup() 
-{    
-    // Clean up particles_tree_
+{
     if (particles_tree_ != NULL) {
-        delete particles_tree_; // This also frees memory allocated for branches
+        delete particles_tree_;
         particles_tree_ = NULL;
     }
 
-    // Clean up data_tree_
     if (data_tree_ != NULL) {
         delete data_tree_;
         data_tree_ = NULL;
     }
 
-    // If using dynamic memory for particles_, ensure it is properly deleted
     if (particles_ != NULL) {
         delete particles_;
         particles_ = NULL;
     }
 }
-
