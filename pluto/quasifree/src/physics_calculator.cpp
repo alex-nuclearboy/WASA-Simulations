@@ -1,18 +1,19 @@
-/** 
+/**
  * @file physics_calculator.cpp
  * @author AK <alex.nuclearboy@gmail.com>
- * @brief Implementation of the PhysicsCalculator class for calculations 
- *        within the event generator of simulations of quasi-elastic scattering.
- * 
- * @details The PhysicsCalculator class is designed to support the simulation 
- * and analysis of quasi-elastic proton-deuteron scattering reaction, 
- * where the neutron within the deuteron acts as a spectator (pd -> ppn_spectator). 
- * This class provides calculations needed for such simulations.
- * 
+ * @brief Implementation of the PhysicsCalculator class for various physics
+ *        calculations used in simulations.
+ *
+ * Implements static methods of the PhysicsCalculator class, designed to perform 
+ * a wide range of physics calculations essential for the simulation and analysis 
+ * of nuclear and particle physics reactions. It includes methods for energy 
+ * and momentum calculations, invariant mass computation, and construction of 
+ * four-vectors, using the ROOT library's mathematical tools for precision.
+ *
  * @version 1.0
  * @date 2024-02-17
- * 
- * @remark Licensed under the GNU General Public License version 3.0 (GPLv3).
+ *
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
 
 #include "physics_calculator.h"
