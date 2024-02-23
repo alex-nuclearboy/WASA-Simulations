@@ -10,8 +10,8 @@
  * and momentum calculations, invariant mass computation, and construction of 
  * four-vectors, using the ROOT library's mathematical tools for precision.
  *
- * @version 1.0
- * @date 2024-02-17
+ * @version 2.0
+ * @date 2024-02-23
  *
  * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
@@ -23,6 +23,10 @@
 const Double_t m_d = Constants::DEUTERON_MASS;
 const Double_t m_n = Constants::NEUTRON_MASS;
 const Double_t m_p = Constants::PROTON_MASS;
+const Double_t m_he3 = Constants::HELIUM_3_MASS;
+const Double_t m_eta = Constants::ETA_MASS;
+const Double_t p_beam_low = Constants::BEAM_MOMENTUM_MIN;
+const Double_t p_beam_upp = Constants::BEAM_MOMENTUM_MAX;
 
 Double_t PhysicsCalculator::calculateEnergy(Double_t p, Double_t m) 
 {
@@ -89,4 +93,26 @@ TLorentzVector PhysicsCalculator::createFourVector(
     TLorentzVector vec4;
     vec4.SetVectM(vec, m);
     return vec4;
+}
+
+TF1* PhysicsCalculator::BreitWigner(Double_t *x, Double_t *par)
+{
+    // Calculate the mesic nucleus mass as the sum of eta meson and helium-3 
+    // nucleus masses, subtracting the binding energy (Bs).
+    Double_t mass_bs = m_eta + m_he3 - par[0];
+    par[2] = mass_bs; //  Assign mass_bs to the third parameter for use in the formula.
+
+    // Calculate the invariant mass range for the distribution.
+    Double_t begin = PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_low);
+    Double_t end = PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_upp);
+
+    // Define the Breit-Wigner function using ROOT's TF1, where [2] corresponds to mass_bs.
+    TF1* bw_function = new TF1("BreitWigner", 
+        "[1] / (2 * TMath::Pi() * ((x[0] - [2]) * (x[0] - [2]) + [1] * [1] / 4))", 
+        begin, end);
+
+    // Set the initial parameter values for the function.
+    bw_function->SetParameters(par[0], par[1], mass_bs);
+
+    return bw_function;
 }

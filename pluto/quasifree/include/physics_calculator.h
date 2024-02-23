@@ -4,15 +4,18 @@
  * @brief Declaration of PhysicsCalculator class for performing essential 
  *        physics calculations for simulations.
  *
- * Provides static methods for various physics calculations relevant to 
- * nuclear reaction simulations, including energy, momentum, and 
- * invariant mass computations, as well as constructing four-vectors. 
+ * This class provides static methods for various physics calculations relevant 
+ * to nuclear reaction simulations, including energy, momentum, and invariant 
+ * mass computations, as well as constructing four-vectors. 
  * Uses ROOT's mathematical libraries for precise and efficient calculations.
  *
- * @version 1.0
- * @date 2024-02-17
+ * @version 2.0
+ * @date 2024-02-23
  *
- * @note Licensed under the GNU General Public License version 3.0 (GPLv3).
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
+ *
+ * @remark Within the framework of this class, the convention c = 1 is applied, 
+ *         simplifying expressions through the use of natural units.
  */
 
 #ifndef PHYSICS_CALCULATOR_H
@@ -20,16 +23,17 @@
 
 #include "Rtypes.h"
 #include "TLorentzVector.h"
+#include "TF1.h"
 
 /**
  * @class PhysicsCalculator
- * @brief Provides physics calculations for particle interactions.
+ * @brief Provides physics calculations for particle interactions within simulations.
  */
 class PhysicsCalculator {
 public:
     /**
      * Calculates the total energy of a particle given its momentum and mass 
-     * using the relativistic energy-momentum relation.
+     * using the relativistic energy-momentum relation: E = sqrt(p^2 + m^2).
      *
      * @param p Momentum of particle in GeV/c.
      * @param m Mass of particle in GeV/c^2.
@@ -108,6 +112,22 @@ public:
      */
     static TLorentzVector createFourVector(
         Double_t m, Double_t p = 0, Double_t theta = 0, Double_t phi = 0);
+
+    /**
+     * Constructs the Breit-Wigner distribution function for a given binding energy 
+     * and width of the bound ^3He-eta state.
+     *
+     * This function computes the Breit-Wigner distribution, which describes the 
+     * resonance structure of the bound ^3He-eta state.
+     *
+     * @param x Pointer to the independent variable.
+     * @param par Pointer to the array of parameters, where par[0] represents 
+     *            the binding energy (Bs), par[1] represents the width of the 
+     *            bound state, and par[2] is used internally to pass the bound 
+     *            state mass.
+     * @return Breit-Wigner distribution function value for the given parameters.
+     */
+    static TF1 *BreitWigner(Double_t *x, Double_t *par);
 };
 
 #endif // PHYSICS_CALCULATOR_H
