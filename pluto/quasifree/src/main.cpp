@@ -3,7 +3,7 @@
  * @brief Entry point for a program simulating quasi-elastic proton-deuteron 
  *        scattering events.
  *
- * @details 
+ * @details
  * This program simulates quasi-elastic proton-deuteron scattering events 
  * using predefined models for the momentum distribution of nucleons within 
  * the deuteron. It initialises the necessary libraries, reads the nucleon 
@@ -13,17 +13,16 @@
  * Required environment variables:
  * - ROOTSYS: Specifies the root installation directory.
  * - PLUTOSYS: Specifies the PLUTO simulation framework installation directory.
- * 
+ *
  * The program outputs:
  * - A ROOT file containing the simulated events.
  * - A ROOT file with calculated data from the events.
  * - A text file listing the proton momentum and scattering angle.
- * 
+ *
  * @version 2.0
- * @date 2024-02-15
- * @note Last updated on 2024-02-20.
- * 
- * @remark Licensed under the GNU General Public License version 3.0 (GPLv3).
+ * @date 2024-02-23
+ *
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
 
 #include "momentum_data_loader.h"
@@ -31,10 +30,9 @@
 #include "event_generator.h"
 #include "data_writer.h"
 #include <iostream>
+#include <cstdlib>
 #include <string>
-#include <sstream>
 #include "TGraph.h"
-
 
 // Constants for the simulation
 const Int_t NUM_EVENTS = 1000;
@@ -42,7 +40,7 @@ const Int_t NUM_ITERATIONS = 2;
 
 /**
  * @brief Main function to initialise the simulation for a specific model.
- * 
+ *
  * The program performs the following steps:
  * 1. Validates the command-line arguments and environment variables.
  * 2. Initialises the ROOT and PLUTO libraries required for the simulation.
@@ -50,7 +48,7 @@ const Int_t NUM_ITERATIONS = 2;
  * 4. Runs the simulation for a predefined number of iterations, generating 
  *    and processing events.
  * 5. Cleans up resources and exits.
- * 
+ *
  * @param argc Number of command-line arguments.
  * @param argv Array of command-line arguments.
  * @return 0 upon successful completion, or 1 if an error occurs.
