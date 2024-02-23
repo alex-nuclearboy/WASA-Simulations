@@ -132,7 +132,7 @@ private:
 
     DataWriter& writer_;   ///< Manages output of simulation data.
 
-    std::vector<std::pair<double, double> > proton_data;  ///< Stores proton data (momentum and scattering angle).
+    std::vector<std::pair<Double_t, Double_t> > proton_data;  ///< Stores proton data (momentum and scattering angle).
 
     std::string pluto_data_file_;
     std::string analysis_data_file_;

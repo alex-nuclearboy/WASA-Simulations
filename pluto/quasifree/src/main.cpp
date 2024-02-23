@@ -37,8 +37,8 @@
 
 
 // Constants for the simulation
-const int NUM_EVENTS = 1000;
-const int NUM_ITERATIONS = 2;
+const Int_t NUM_EVENTS = 1000;
+const Int_t NUM_ITERATIONS = 2;
 
 /**
  * @brief Main function to initialise the simulation for a specific model.
@@ -55,7 +55,7 @@ const int NUM_ITERATIONS = 2;
  * @param argv Array of command-line arguments.
  * @return 0 upon successful completion, or 1 if an error occurs.
  */
-int main(int argc, char** argv) {
+Int_t main(Int_t argc, char** argv) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <Model Name>" << std::endl;
         return 1;
