@@ -19,10 +19,10 @@
  * - Output simulation data for further analysis and visualization.
  *
  * @remark This class requires the ROOT and PLUTO frameworks for its operation.
- * 
+ *
  * @version 2.0
- * @date 2024-02-22
- * 
+ * @date 2024-02-23
+ *
  * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
 
@@ -54,6 +54,11 @@ struct ParticleData {
         : name(n), vector(v) {}
 };
 
+/**
+ * @class EventGenerator
+ * @brief Manages the generation of simulation events for the quasi-elastic 
+ *        proton-deuteron scattering reaction.
+*/
 class EventGenerator {
 public:
     /**
@@ -120,7 +125,7 @@ private:
      *
      * This method fills a TClonesArray with ParticleData instances, each 
      * representing a particle's state in the simulation.
-     * 
+     *
      * @param particles_array Pointer to a TClonesArray that should be filled 
      *                        with particles.
      * @param particles_data Vector of ParticleData structs, each containing 
@@ -147,7 +152,22 @@ private:
     TClonesArray* particles_;    ///< Array of the outgoing particles per event.
 
     TTree* data_tree_;    ///< Stores calculated event data.
-    Double_t momentum_;
+    Double_t beam_momentum_lab, beam_energy_lab;
+    Double_t beam_momentum_cm, beam_energy_cm;
+    Double_t inv_mass;
+    Double_t target_neutron_momentum_cm, target_proton_momentum_cm;
+    Double_t target_neutron_theta_cm, target_neutron_phi_cm;
+    Double_t target_proton_theta_cm, target_proton_phi_cm;
+    Double_t effective_proton_mass;
+    Double_t target_proton_energy_cm;
+    Double_t effective_proton_momentum;
+    Double_t proton_proton_angle;
+    Double_t inv_mass_pp;
+    Double_t beam_proton_momentum_pp, target_proton_momentum_pp;
+    Double_t beam_proton_theta_scat_cm, beam_proton_phi_scat_cm;
+    Double_t target_proton_theta_scat_cm, target_proton_phi_scat_cm;
+    Double_t test;
+
 };
 
 #endif // EVENT_GENERATOR_H
