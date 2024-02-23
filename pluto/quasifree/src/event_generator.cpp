@@ -23,9 +23,9 @@
 #include "TRandom3.h"
 #include "PParticle.h"
 
-const double proton_mass = Constants::PROTON_MASS;
-const double neutron_mass = Constants::NEUTRON_MASS;
-const double deuteron_mass = Constants::DEUTERON_MASS;
+const Double_t proton_mass = Constants::PROTON_MASS;
+const Double_t neutron_mass = Constants::NEUTRON_MASS;
+const Double_t deuteron_mass = Constants::DEUTERON_MASS;
 
 RandomGenerator rand_gen;
 
@@ -79,7 +79,7 @@ void EventGenerator::setParticles(
     }
 }
 
-void EventGenerator::generateEvents(int num_events)
+void EventGenerator::generateEvents(Int_t num_events)
 {
     setupTree();
 
@@ -90,7 +90,7 @@ void EventGenerator::generateEvents(int num_events)
 
     proton_data.clear();
 
-    for (int i = 0; i < num_events; ) {
+    for (Int_t i = 0; i < num_events; ) {
         std::vector<ParticleData> event_particles;
 
         /* LAB FRAME */
@@ -323,7 +323,7 @@ void EventGenerator::runSimulations(
 {
     DataWriter dataWriter;
 
-    for (int iteration = 0; iteration < num_iterations; ++iteration) {
+    for (Int_t iteration = 0; iteration < num_iterations; ++iteration) {
         std::cout << "Processing simulation run " << (iteration + 1) << "..." 
                   << std::endl;
 

@@ -1,3 +1,19 @@
+/**
+ * @file data_writer.cpp
+ * @author AK <alex.nuclearboy@gmail.com>
+ * @brief Implementation of the DataWriter class for efficient data handling and storage in files.
+ * 
+ * The DataWriter class is specifically designed to facilitate the storage and
+ * management of simulation data in ROOT and text formats. This includes handling
+ * outputs for PLUTO simulations, storing calculated data, and recording effective
+ * proton momentum and scattering angle data.
+ * 
+ * @version 2.0
+ * @date 2024-02-23
+ * 
+ * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
+*/
+
 #include "data_writer.h"
 #include <iostream>
 #include <fstream>
@@ -9,26 +25,34 @@
 #include "TFile.h"
 #include "TTree.h"
 
-DataWriter::DataWriter() {}
+DataWriter::DataWriter() {}     ///< Default constructor.
 
-DataWriter::~DataWriter() {}
+DataWriter::~DataWriter() {}    ///< Destructor.
 
-void DataWriter::writeTreeToFile(TTree* tree, const std::string& file_name) {
+void DataWriter::writeTreeToFile(TTree* tree, const std::string& file_name) 
+{
+    // Writes a ROOT TTree structure to a file.
+
     if (!tree) {
         std::cerr << "No tree provided to write." << std::endl;
         return;
     }
-    TFile file(file_name.c_str(), "RECREATE", "", 1);
+    TFile file(file_name.c_str(), "RECREATE");
     if (!file.IsOpen()) {
         std::cerr << "Failed to open file: " << file_name << std::endl;
         return;
     }
-    
+
     tree->Write();
     file.Close();
 }
 
-void DataWriter::writeProtonData(const std::vector<std::pair<double, double> >& data, const std::string& file_name) {
+void DataWriter::writeProtonData(
+    const std::vector<std::pair<Double_t, Double_t> >& data, 
+    const std::string& file_name) 
+{
+    // Writes pairs of proton momentum and scattering angle to a text file.
+
     std::ofstream out_file(file_name.c_str());
     if (!out_file.is_open()) {
         std::cerr << "Failed to open text file for writing: " << file_name << std::endl;
@@ -43,8 +67,10 @@ void DataWriter::writeProtonData(const std::vector<std::pair<double, double> >& 
 }
 
 std::string DataWriter::getPlutoFilePath(
-    const std::string& model_name, int iteration) 
+    const std::string& model_name, Int_t iteration) 
 {
+    // Returns the file path for storing the PLUTO simulation outputs, 
+    // including the model name and iteration.
     std::ostringstream path;
     path << getenv("PLUTO_OUTPUT") << "/pd-ppn_spec-" << model_name << "-" 
          << (iteration + 1) << ".root";
@@ -52,8 +78,10 @@ std::string DataWriter::getPlutoFilePath(
 }
 
 std::string DataWriter::getDataFilePath(
-    const std::string& model_name, int iteration)
+    const std::string& model_name, Int_t iteration)
 {
+    // Returns the path for the file containing calculated simulation values,
+    // formatted with the model name and iteration.
     std::ostringstream path;
     path << "../data/data_ppn_spec-" << model_name << "-" << (iteration + 1) 
          << ".root";
@@ -61,16 +89,20 @@ std::string DataWriter::getDataFilePath(
 }
 
 std::string DataWriter::getProtonFilePath(
-    const std::string& model_name, int iteration)
+    const std::string& model_name, Int_t iteration)
 {
+    // Returns the file path for storing proton data, 
+    // formatted with the model name and iteration.
     std::ostringstream path;
     path << "../data/proton_momentum_theta-" << model_name << "-" 
          << (iteration + 1) << ".txt";
     return getAbsolutePath(path.str());
 }
 
-std::string DataWriter::getAbsolutePath(const std::string& relative_path) {
-    char temp[PATH_MAX];
+std::string DataWriter::getAbsolutePath(const std::string& relative_path) 
+{
+    // Retrieves the absolute path for a given relative path.
+    char temp[PATH_MAX]; ///< Temporary buffer to store the absolute path.
     char* resolved_path = realpath(relative_path.c_str(), temp);
     if (resolved_path) {
         return std::string(resolved_path);
