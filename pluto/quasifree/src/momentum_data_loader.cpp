@@ -90,14 +90,14 @@ TGraph* MomentumDataLoader::loadDeuteronNMD(const std::string& model_name)
 // Loads the momentum distribution of a proton or N*(1535) resonance 
 // for a given energy.
 TGraph* MomentumDataLoader::loadHeliumNMD(
-    const std::string& particle_type, double energy) 
+    const std::string& particle_type, Double_t energy) 
 {
     // Maps particle types and energies to their corresponding file paths.
     std::map<std::string, std::string> particle_file_map;
     particle_file_map["proton"] = 
         "../momentum_distributions/mom_distr_nucleon_3he_converted.txt";
 
-    std::map<double, std::string> energy_to_file_map;
+    std::map<Double_t, std::string> energy_to_file_map;
     energy_to_file_map.insert(std::make_pair(0.33, 
         "../momentum_distributions/mom_distr_resonance_3he_e33_converted.txt"));
     energy_to_file_map.insert(std::make_pair(0.53, 
