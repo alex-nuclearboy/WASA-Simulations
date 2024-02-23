@@ -97,14 +97,18 @@ TLorentzVector PhysicsCalculator::createFourVector(
 
 TF1* PhysicsCalculator::BreitWigner(Double_t *x, Double_t *par)
 {
+    // Construct the Breit-Wigner function using ROOT's TF1.
+
     // Calculate the mesic nucleus mass as the sum of eta meson and helium-3 
     // nucleus masses, subtracting the binding energy (Bs).
     Double_t mass_bs = m_eta + m_he3 - par[0];
     par[2] = mass_bs; //  Assign mass_bs to the third parameter for use in the formula.
 
     // Calculate the invariant mass range for the distribution.
-    Double_t begin = PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_low);
-    Double_t end = PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_upp);
+    Double_t begin = 
+        PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_low);
+    Double_t end = 
+        PhysicsCalculator::calculateInvariantMass(m_p, m_d, p_beam_upp);
 
     // Define the Breit-Wigner function using ROOT's TF1, where [2] corresponds to mass_bs.
     TF1* bw_function = new TF1("BreitWigner", 
