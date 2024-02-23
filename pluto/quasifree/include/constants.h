@@ -3,7 +3,7 @@
  * @author AK <alex.nuclearboy@gmail.com>
  * @brief Provides physical constants for nuclear physics simulations.
  * 
- * @date 2024-02-17
+ * @date 2024-02-23
  * 
  * @note All constants are given in natural units, where c = 1.
  */
@@ -22,8 +22,8 @@ namespace Constants {
     static const Double_t HELIUM_4_MASS = 3.7264225;    ///< Mass of Helium-4 in GeV/c^2.
     static const Double_t PI_0_MASS = 0.134977;         ///< Neutral pion (pi0) mass in GeV/c^2.
     static const Double_t ETA_MASS = 0.547862;          ///< Eta meson mass in GeV/c^2.
-    static const Double_t BEAM_MOMENTUM_MIN = 1.426;    ///< Minimum beam momentum in GeV/c.
-    static const Double_t BEAM_MOMENTUM_MAX = 1.635;    ///< Maximum beam momentum in GeV/c.
+    static const Double_t BEAM_MOMENTUM_MIN = 1.426;    ///< Lower limit of proton beam momentum in the experiment in GeV/c.
+    static const Double_t BEAM_MOMENTUM_MAX = 1.635;    ///< Upper limit of proton beam momentum in the experiment in GeV/c.
 }
 
 #endif // CONSTANTS_H
