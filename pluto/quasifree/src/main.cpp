@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
     // Model selection and data loading
     std::string model_name = argv[1];
-    TGraph* graph = MomentumDataLoader::loadMomentumDistribution(model_name);
+    TGraph* graph = MomentumDataLoader::loadDeuteronNMD(model_name);
     if (graph == NULL || graph->GetN() <= 0) {
         std::cerr << "Error: Failed to load momentum distribution data." 
                   << std::endl;
