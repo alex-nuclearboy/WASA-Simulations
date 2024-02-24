@@ -151,7 +151,7 @@ private:
     Float_t Phi_;
     TClonesArray* particles_;    ///< Array of the outgoing particles per event.
 
-    TTree* data_tree_;    ///< Stores calculated event data.
+    TTree* data_tree_;    ///< Stores calculated values.
     Double_t beam_momentum_lab, beam_energy_lab;
     Double_t beam_momentum_cm, beam_energy_cm;
     Double_t inv_mass_pd;
@@ -166,7 +166,6 @@ private:
     Double_t beam_proton_momentum_pp, target_proton_momentum_pp;
     Double_t beam_proton_theta_scat_cm, beam_proton_phi_scat_cm;
     Double_t target_proton_theta_scat_cm, target_proton_phi_scat_cm;
-    Double_t test;
 };
 
 #endif // EVENT_GENERATOR_H
