@@ -17,6 +17,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>  // For getenv()
+#include "TROOT.h"
 #include "TSystem.h"
 
 Bool_t LibraryManager::initialiseLibraries() 
@@ -59,6 +60,19 @@ Bool_t LibraryManager::initialiseLibraries()
     gSystem->SetIncludePath(include_path.c_str());
     std::cout << "Include path for PLUTO headers set to: " << include_path 
               << std::endl;
+
+    // Compile and dynamically load the GINFile.cxx source file.
+    // This process involves compiling GINFile.cxx into a shared object (GINFile_cxx.so)
+    // and loading it for use within the current ROOT session.
+    std::cout << "Compiling and loading GINFile.cxx..." << std::endl;
+    if (gROOT->ProcessLine(".L ../src/GINFile.cxx+") == -1) {
+        std::cerr << "Compilation of GINFile.cxx failed." << std::endl;
+        return false;
+    }
+    if (gSystem->Load("../src/GINFile_cxx.so") == -1) {
+        std::cerr << "Unable to load GINFile_cxx.so" << std::endl;
+        return false;
+    }
 
     std::cout << "All libraries loaded successfully. "
               << "Simulation environment is ready." << std::endl;
