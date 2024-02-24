@@ -20,8 +20,8 @@
  *
  * @remark This class requires the ROOT and PLUTO frameworks for its operation.
  *
- * @version 2.0
- * @date 2024-02-23
+ * @version 2.1
+ * @date 2024-02-24
  *
  * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  */
@@ -154,7 +154,7 @@ private:
     TTree* data_tree_;    ///< Stores calculated event data.
     Double_t beam_momentum_lab, beam_energy_lab;
     Double_t beam_momentum_cm, beam_energy_cm;
-    Double_t inv_mass;
+    Double_t inv_mass_pd;
     Double_t target_neutron_momentum_cm, target_proton_momentum_cm;
     Double_t target_neutron_theta_cm, target_neutron_phi_cm;
     Double_t target_proton_theta_cm, target_proton_phi_cm;
@@ -167,7 +167,6 @@ private:
     Double_t beam_proton_theta_scat_cm, beam_proton_phi_scat_cm;
     Double_t target_proton_theta_scat_cm, target_proton_phi_scat_cm;
     Double_t test;
-
 };
 
 #endif // EVENT_GENERATOR_H
