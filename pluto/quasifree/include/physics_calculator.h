@@ -9,8 +9,8 @@
  * mass computations, as well as constructing four-vectors. 
  * Uses ROOT's mathematical libraries for precise and efficient calculations.
  *
- * @version 2.0
- * @date 2024-02-23
+ * @version 2.1
+ * @date 2024-02-24
  *
  * @note Distributed under the GNU General Public License version 3.0 (GPLv3).
  *
