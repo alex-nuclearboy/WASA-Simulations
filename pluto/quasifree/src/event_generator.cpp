@@ -15,13 +15,8 @@
 #include "physics_calculator.h"
 #include "constants.h"
 #include <iostream>
-#include "TCanvas.h"
-#include "TH1F.h"
 #include "TROOT.h"
-#include "TFile.h"
-#include "TF1.h"
 #include "TGraph.h"
-#include "TRandom3.h"
 #include "PParticle.h"
 
 const Double_t proton_mass = Constants::PROTON_MASS;
@@ -45,7 +40,6 @@ EventGenerator::~EventGenerator() {}
 void EventGenerator::setupTree() 
 {
     // Set up a tree structure for storing data on outgoing particles
-    Npart_ = 3;
     Impact_ = 0;
     Phi_ = 0;
     particles_ = new TClonesArray("PParticle", Npart_);
@@ -351,6 +345,8 @@ void EventGenerator::generateEvents(Int_t num_events)
             particles_->Clear();
 
             setParticles(particles_, event_particles);
+
+            Npart_ = event_particles.size();
 
             particles_tree_->Fill();
             data_tree_->Fill();
