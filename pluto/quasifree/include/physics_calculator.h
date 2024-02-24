@@ -53,6 +53,22 @@ public:
     static Double_t calculateInvariantMass(Double_t m1, Double_t m2, Double_t p);
 
     /**
+     * Calculates the invariant mass of a two-particle system where both particles 
+     * are moving. This method takes into account the energies and momenta of 
+     * both particles, as well as the angle between their momentum vectors.
+     *
+     * @param e1 Energy of the first particle in GeV.
+     * @param e2 Energy of the second particle in GeV.
+     * @param p1 Momentum of the first particle in GeV/c.
+     * @param p2 Momentum of the second particle in GeV/c.
+     * @param angle The angle in radians between the momentum vectors of the 
+     *              two particles.
+     * @return Invariant mass of the two-particle system in GeV/c^2.
+     */
+    static Double_t calculateInvariantMass(
+        Double_t e1, Double_t e2, Double_t p1, Double_t p2, Double_t angle);
+
+    /**
      * Calculates the effective mass of proton in neutron-proton system, 
      * considering internal dynamics within deuteron.
      *
