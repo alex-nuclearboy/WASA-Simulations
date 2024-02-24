@@ -42,6 +42,21 @@ Double_t PhysicsCalculator::calculateInvariantMass(
     return TMath::Sqrt(m1 * m1 + m2 * m2 + 2 * m2 * TMath::Sqrt(m1 * m1 + p * p));
 }
 
+Double_t PhysicsCalculator::calculateInvariantMass(
+    Double_t e1, Double_t e2, Double_t p1, Double_t p2, Double_t angle) 
+{
+    // Invariant mass for a system of two moving particles
+    // sqrt((E1 + E2)^2 -(p1 + p2)^2)
+ 
+    // First, calculate the square of the sum of energies
+    Double_t energy_sum_sq = (e1 + e2) * (e1 + e2);
+    // Next, calculate the square of the sum of momenta
+    // (p1 + p2)^2 = p1^2 + p2^2 + 2*p1*p2*cos(angle)
+    Double_t momentum_sum_sq = p1 * p1 + p2 * p2 + 2 * p1 * p2 * TMath::Cos(angle);
+    // Return the invariant mass
+    return TMath::Sqrt(energy_sum_sq - momentum_sum_sq);
+}
+
 Double_t PhysicsCalculator::calculateEffectiveProtonMass(Double_t p)
 {
     // Effective mass considering neutron-proton system within the deuteron
@@ -54,12 +69,12 @@ Double_t PhysicsCalculator::calculateEffectiveProtonMomentum(
     Double_t angle, Double_t m_p_eff)
 {
     // Calculate effective beam proton momentum in proton-proton frame.
-    // First, calculate the invariant mass squared of the two-proton system
-    Double_t inv_mass = (e1 + e2) * (e1 + e2) - p1 * p1 - p2 * p2 
-                       - 2 * p1 * p2 * TMath::Cos(angle);
-    // Next, compute the term inside the square root
-    Double_t term = (inv_mass - m_p * m_p - m_p_eff * m_p_eff) / (2 * m_p_eff);
 
+    // First, calculate the invariant mass squared of the two-proton system
+    Double_t inv_mass = calculateInvariantMass(e1, e2, p1, p2, angle);
+    // Next, compute the term inside the square root
+    Double_t term = (inv_mass * inv_mass - m_p * m_p - m_p_eff * m_p_eff) / 
+                    (2 * m_p_eff);
     // Finally, calculate and return the effective proton momentum
     return TMath::Sqrt(term * term - m_p * m_p);
 }
