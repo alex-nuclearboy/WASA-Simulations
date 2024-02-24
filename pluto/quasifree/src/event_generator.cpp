@@ -58,37 +58,47 @@ void EventGenerator::setupTree()
 
     // Set up a tree structure with calculated values
     data_tree_ = new TTree("values", "Simulation Data");
-    data_tree_->Branch("beam_momentum_lab", &beam_momentum_lab, "beam_momentum_lab/D");
-    data_tree_->Branch("beam_momentum_cm", &beam_momentum_cm, "beam_momentum_cm/D");
-    data_tree_->Branch("beam_energy_lab", &beam_energy_lab, "beam_energy_lab/D");
+    data_tree_->Branch("beam_momentum_lab", &beam_momentum_lab, 
+                       "beam_momentum_lab/D");
+    data_tree_->Branch("beam_momentum_cm", &beam_momentum_cm, 
+                       "beam_momentum_cm/D");
+    data_tree_->Branch("beam_energy_lab", &beam_energy_lab, 
+                       "beam_energy_lab/D");
     data_tree_->Branch("beam_energy_cm", &beam_energy_cm, "beam_energy_cm/D");
     data_tree_->Branch("inv_mass_pd", &inv_mass_pd, "inv_mass_pd/D");
-
-    data_tree_->Branch("target_neutron_momentum_cm", &target_neutron_momentum_cm, "target_neutron_momentum_cm/D");
-    data_tree_->Branch("target_neutron_theta_cm", &target_neutron_theta_cm, "target_neutron_theta_cm/D");
-    data_tree_->Branch("target_neutron_phi_cm", &target_neutron_phi_cm, "target_neutron_phi_cm/D");
-    data_tree_->Branch("target_proton_momentum_cm", &target_proton_momentum_cm, "target_proton_momentum_cm/D");
-    data_tree_->Branch("target_proton_theta_cm", &target_proton_theta_cm, "target_proton_theta_cm/D");
-    data_tree_->Branch("target_proton_phi_cm", &target_proton_phi_cm, "target_proton_phi_cm/D");
-
-    data_tree_->Branch("proton_proton_angle", &proton_proton_angle, "proton_proton_angle/D");
+    data_tree_->Branch("target_neutron_momentum_cm", &target_neutron_momentum_cm, 
+                       "target_neutron_momentum_cm/D");
+    data_tree_->Branch("target_neutron_theta_cm", &target_neutron_theta_cm, 
+                       "target_neutron_theta_cm/D");
+    data_tree_->Branch("target_neutron_phi_cm", &target_neutron_phi_cm, 
+                       "target_neutron_phi_cm/D");
+    data_tree_->Branch("target_proton_momentum_cm", &target_proton_momentum_cm, 
+                       "target_proton_momentum_cm/D");
+    data_tree_->Branch("target_proton_theta_cm", &target_proton_theta_cm, 
+                       "target_proton_theta_cm/D");
+    data_tree_->Branch("target_proton_phi_cm", &target_proton_phi_cm, 
+                       "target_proton_phi_cm/D");
+    data_tree_->Branch("proton_proton_angle", &proton_proton_angle, 
+                       "proton_proton_angle/D");
     data_tree_->Branch("inv_mass_pp", &inv_mass_pp, "inv_mass_pp/D");
-    data_tree_->Branch("effective_proton_mass", &effective_proton_mass, "effective_proton_mass/D");
-    data_tree_->Branch("effective_proton_momentum", &effective_proton_momentum, "effective_proton_momentum/D");    
-
-    data_tree_->Branch("beam_proton_momentum_pp", &beam_proton_momentum_pp, "beam_proton_momentum_pp/D");
-    data_tree_->Branch("beam_proton_theta_scat_cm", &beam_proton_theta_scat_cm, "beam_proton_theta_scat_cm/D");
-    data_tree_->Branch("beam_proton_phi_scat_cm", &beam_proton_phi_scat_cm, "beam_proton_phi_scat_cm/D");
-
-    data_tree_->Branch("target_proton_momentum_pp", &target_proton_momentum_pp, "target_proton_momentum_pp/D");    
-    data_tree_->Branch("target_proton_theta_scat_cm", &target_proton_theta_scat_cm, "target_proton_theta_scat_cm/D");
-    data_tree_->Branch("target_proton_phi_scat_cm", &target_proton_phi_scat_cm, "target_proton_phi_scat_cm/D");
-    
-    data_tree_->Branch("target_proton_energy_cm", &target_proton_energy_cm, "target_proton_energy_cm/D");
-    
-    
-    
-    
+    data_tree_->Branch("effective_proton_mass", &effective_proton_mass, 
+                       "effective_proton_mass/D");
+    data_tree_->Branch("effective_proton_momentum", &effective_proton_momentum, 
+                       "effective_proton_momentum/D");
+    data_tree_->Branch("beam_proton_momentum_pp", &beam_proton_momentum_pp, 
+                       "beam_proton_momentum_pp/D");
+    data_tree_->Branch("beam_proton_theta_scat_cm", &beam_proton_theta_scat_cm, 
+                       "beam_proton_theta_scat_cm/D");
+    data_tree_->Branch("beam_proton_phi_scat_cm", &beam_proton_phi_scat_cm, 
+                       "beam_proton_phi_scat_cm/D");
+    data_tree_->Branch("target_proton_momentum_pp", &target_proton_momentum_pp, 
+                       "target_proton_momentum_pp/D");
+    data_tree_->Branch("target_proton_theta_scat_cm", &target_proton_theta_scat_cm, 
+                       "target_proton_theta_scat_cm/D");
+    data_tree_->Branch("target_proton_phi_scat_cm", &target_proton_phi_scat_cm, 
+                       "target_proton_phi_scat_cm/D");
+    data_tree_->Branch("target_proton_energy_cm", &target_proton_energy_cm, 
+                       "target_proton_energy_cm/D");
 }
 
 void EventGenerator::setParticles(
