@@ -99,7 +99,7 @@ void EventGenerator::setParticles(
     TClonesArray* particles_array, 
     const std::vector<ParticleData>& particles_data) 
 {
-    particles_array->Clear();
+    particles_array->Clear("C");
 
     // Fill particles array with ParticleData instances
     for (size_t i = 0; i < particles_data.size(); ++i) {
