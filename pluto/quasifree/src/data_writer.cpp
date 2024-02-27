@@ -22,6 +22,8 @@
 #include <cstdlib>
 #include <limits.h>
 #include <unistd.h>
+#include <libgen.h>
+#include <cstring>
 #include "TFile.h"
 #include "TTree.h"
 
@@ -103,12 +105,18 @@ std::string DataWriter::getAbsolutePath(const std::string& relative_path)
 {
     // Retrieves the absolute path for a given relative path.
     char temp[PATH_MAX]; ///< Temporary buffer to store the absolute path.
-    char* resolved_path = realpath(relative_path.c_str(), temp);
+    char* path_copy = strdup(relative_path.c_str());
+    char* dir_path = dirname(path_copy);
+    char* resolved_path = realpath(dir_path, temp);
+    free(path_copy); // Free the duplicated string
     if (resolved_path) {
-        return std::string(resolved_path);
+        std::string abs_path(resolved_path);
+        // Extract the file name and append it to the resolved directory path
+        std::string file_name = relative_path.substr(relative_path.find_last_of("/\\") + 1);
+        abs_path += "/" + file_name; // Use appropriate separator
+        return abs_path;
     } else {
-        std::cerr << "Error resolving absolute path for: " << relative_path 
-                  << std::endl;
-        return "";
+        std::cerr << "Error resolving absolute path for: " << dir_path << std::endl;
+        return ""; // Or handle the error as appropriate
     }
 }
