@@ -152,20 +152,31 @@ private:
     TClonesArray* particles_;    ///< Array of the outgoing particles per event.
 
     TTree* data_tree_;    ///< Stores calculated values.
-    Double_t beam_momentum_lab, beam_energy_lab;
-    Double_t beam_momentum_cm, beam_energy_cm;
-    Double_t inv_mass_pd;
-    Double_t target_neutron_momentum_cm, target_proton_momentum_cm;
-    Double_t target_neutron_theta_cm, target_neutron_phi_cm;
-    Double_t target_proton_theta_cm, target_proton_phi_cm;
-    Double_t effective_proton_mass;
-    Double_t target_proton_energy_cm;
-    Double_t effective_proton_momentum;
-    Double_t proton_proton_angle;
-    Double_t inv_mass_pp;
-    Double_t beam_proton_momentum_pp, target_proton_momentum_pp;
-    Double_t beam_proton_theta_scat_cm, beam_proton_phi_scat_cm;
-    Double_t target_proton_theta_scat_cm, target_proton_phi_scat_cm;
+    std::vector<Double_t> beam_momentum_lab_;
+    std::vector<Double_t> beam_energy_lab_;
+    std::vector<Double_t> beam_momentum_cm_;
+    std::vector<Double_t> beam_energy_cm_;
+    std::vector<Double_t> inv_mass_pd_;
+    std::vector<Double_t> target_neutron_momentum_cm_;
+    std::vector<Double_t> target_proton_momentum_cm_;
+    std::vector<Double_t> target_neutron_theta_cm_;
+    std::vector<Double_t> target_neutron_phi_cm_;
+    std::vector<Double_t> target_proton_theta_cm_;
+    std::vector<Double_t> target_proton_phi_cm_;
+    std::vector<Double_t> effective_proton_mass_;
+    std::vector<Double_t> target_proton_energy_cm_;
+    std::vector<Double_t> effective_proton_momentum_;
+    std::vector<Double_t> proton_proton_angle_;
+    std::vector<Double_t> inv_mass_pp_;
+    std::vector<Double_t> beam_proton_momentum_pp_;
+    std::vector<Double_t> target_proton_momentum_pp_;
+    std::vector<Double_t> beam_proton_theta_scat_cm_;
+    std::vector<Double_t> beam_proton_phi_scat_cm_;
+    std::vector<Double_t> target_proton_theta_scat_cm_;
+    std::vector<Double_t> target_proton_phi_scat_cm_;
+
+
+void clearVectors();
 };
 
 #endif // EVENT_GENERATOR_H
