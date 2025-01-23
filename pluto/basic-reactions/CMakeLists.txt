@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 2.6)
 
 project(ReactionGenerator)
 
@@ -47,5 +47,4 @@ target_link_libraries(pluto_run ${ROOT_LIBRARIES} $ENV{PLUTOSYS}/libPluto.so)
 
 # Set output directory and additional compile options
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
-add_compile_options(-Wall -Wextra -pedantic)
-
+# add_compile_options(-Wall -Wextra -pedantic)
